@@ -7,10 +7,9 @@ CollabDocs is a high-performance, real-time collaborative documentation platform
 ## Overview
 ![CollabDocs Hero](https://ik.imagekit.io/aevhlnk0h/Screenshot%202026-04-30%20172201.png)
 
-<div align="center">
-  <img src="https://ik.imagekit.io/aevhlnk0h/Screenshot%202026-04-30%20173618.png" width="49%" />
-  <img src="https://ik.imagekit.io/aevhlnk0h/Screenshot%202026-04-30%20173738.png" width="49%" />
-</div>
+![Editor Preview](https://ik.imagekit.io/aevhlnk0h/Screenshot%202026-04-30%20173618.png)
+
+![Workspace Preview](https://ik.imagekit.io/aevhlnk0h/Screenshot%202026-04-30%20173738.png)
 
 ---
 
