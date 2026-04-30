@@ -1,88 +1,117 @@
-# ⚙️ Flow Backend - Modular Monolith API
+#  CollabDocs Backend - Modular Monolith API
 
-The backbone of the Flow ecosystem, built as a scalable **Modular Monolith** using Node.js and Drizzle ORM.
-
----
-
-## 🏗️ Technical Architecture
-Flow's backend is designed for high performance and strict separation of concerns.
-
-<!-- Space for an Architecture Diagram -->
-![Architecture Diagram](https://via.placeholder.com/800x400?text=Modular+Monolith+Architecture+Diagram)
-
-- **Modules**: Auth, Users, Workspaces, Docs, Uploads.
-- **Data Persistence**: PostgreSQL with **Drizzle ORM** for type-safe queries.
-- **Security**: RBAC (Role-Based Access Control) and stateless JWT authentication.
-- **Real-time**: Event-driven communication via **Socket.io**.
-- **Tasks**: Distributed job processing with **BullMQ** and **Redis**.
+The core of the CollabDocs ecosystem, built as a high-performance **Modular Monolith** using Node.js, Express, and Drizzle ORM. This backend handles everything from identity management to complex real-time document synchronization.
 
 ---
 
-## 📡 API Reference
+## Technical Architecture
 
-### **Authentication** (`/api/v1/auth`)
+CollabDocs utilizes a hybrid backend strategy to ensure maximum responsiveness and scalability:
+
+### **Database Schema**
+![CollabDocs Database Schema](https://ik.imagekit.io/aevhlnk0h/supabase-schema-ujxiwzjzmryxdxeymzvf%20(2).png)
+
+- **API Server (Port 5000)**: Handles high-level business logic, CRUD operations, authentication, and background task orchestration.
+- **Collaboration Server (Port 3001)**: A standalone **Hocuspocus (Yjs)** server dedicated solely to high-intensity real-time document synchronization and awareness.
+- **Modular Monolith Design**: Strictly separated domains (Auth, Users, Workspaces, Docs, Uploads) allowing for clear boundaries and easy maintenance.
+- **Distributed Processing**: Integrated with **Redis** for rate limiting, session management, and **BullMQ** for async background tasks (like document conversion).
+
+---
+
+##  API Reference (`/api/v1`)
+
+### **1. Authentication** (`/auth`)
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `POST` | `/signup` | Register a new account |
 | `POST` | `/login` | Authenticate and receive session tokens |
+| `GET` | `/verify` | Verify email address |
+| `POST` | `/forgot-password` | Initiate password recovery |
+| `POST` | `/reset-password` | Set new password with token |
 | `GET` | `/google` | Initiate Google OAuth 2.0 flow |
 | `GET` | `/me` | Get currently authenticated user data |
-| `POST` | `/logout` | Revoke session and clear cookies |
+| `GET` | `/sessions` | List all active login sessions |
+| `DELETE` | `/sessions/:id` | Revoke a specific session (Remote Logout) |
+| `POST` | `/logout` | Revoke current session and clear cookies |
 
-### **Documents** (`/api/v1/docs`)
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/` | Create a new document |
-| `GET` | `/:id` | Fetch document details & content |
-| `PATCH` | `/:id` | Update document title or content |
-| `GET` | `/workspace/:id` | List all documents in a workspace |
-| `POST` | `/import` | Convert and import external files |
-| `GET` | `/:id/versions` | List document snapshots (Version History) |
-| `POST` | `/:id/chat` | Send collaborative chat message |
-
-### **Workspaces** (`/api/v1/workspace`)
+### **2. Workspaces** (`/workspace`)
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `GET` | `/` | List all user workspaces |
 | `POST` | `/` | Create a new workspace |
-| `GET` | `/:slug` | Get workspace details by slug |
-| `PATCH` | `/:id` | Update workspace settings |
-| `GET` | `/:id/members` | List workspace team members |
+| `GET` | `/:id` | Get detailed workspace info |
+| `PATCH` | `/:id` | Update settings (Owner/Admin only) |
+| `DELETE` | `/:id` | Permanent deletion (Owner only) |
+| `POST` | `/:id/invite` | Send email invite to new member |
+| `POST` | `/accept-invite/:token`| Join workspace via email link |
+| `PATCH` | `/:id/members/:userId`| Change member role (Admin/Owner only) |
+| `DELETE` | `/:id/members/:userId`| Remove member from workspace |
+
+### **3. Documents** (`/docs`)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/` | Create a new document in a workspace |
+| `GET` | `/workspace/:id` | List all docs in a workspace |
+| `GET` | `/:id` | Fetch full document & metadata |
+| `PATCH` | `/:id` | Update title, content, or visibility |
+| `DELETE` | `/:id` | Move document to trash |
+| `POST` | `/import` | Import .docx/.pdf via Converter Service |
+| `GET` | `/:id/versions` | List all saved history snapshots |
+| `POST` | `/:id/versions` | Manually save a new named version |
+| `POST` | `/:id/favorite` | Toggle starred status |
+| `GET` | `/favorites/:wsId` | List all starred docs in workspace |
+
+### **4. Storage & Media** (`/upload`)
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/presigned-url` | Get Cloudflare R2 secure upload URL |
+| `POST` | `/complete` | Finalize file metadata in database |
+| `POST` | `/multipart/initiate` | Start a high-volume multipart upload |
+| `DELETE` | `/file/:key` | Remove asset from R2 and database |
+| `GET` | `/files` | List all user-uploaded assets |
 
 ---
 
-## 🔧 Infrastructure Details
+## Infrastructure & Tech Stack
 
-### **Database Schema (Drizzle)**
-We use a relational schema optimized for collaboration.
-- `users`: Core identity and profile data.
-- `workspaces`: Multi-tenant containers for documentation.
-- `documents`: Collaborative units with real-time state.
-- `versions`: Historical snapshots for data integrity.
-
-### **Real-time Engine**
-The real-time engine handles cursor presence, collaborative editing (via Yjs/Tiptap), and instant messaging. Scalability is achieved using a **Redis Adapter**.
-
----
-
-## 🚀 Environment Setup
-
-Copy `.env.sample` to `.env` and configure:
-```env
-PORT=5000
-DATABASE_URL=postgres://...
-JWT_SECRET=your_secret
-REDIS_URL=redis://...
-R2_ACCESS_KEY=...
-R2_SECRET_KEY=...
-R2_BUCKET_NAME=...
-GOOGLE_CLIENT_ID=...
-```
+- **Framework**: Express.js with TypeScript
+- **Database**: PostgreSQL
+- **ORM**: Drizzle ORM (Type-safe migrations & queries)
+- **Real-time**: Hocuspocus (Yjs) + Socket.io (Presence/Chat)
+- **Cache & Queue**: Redis + BullMQ
+- **Storage**: Cloudflare R2 (S3 Compatible)
+- **Emails**: Resend API
+- **Monitoring**: Pino Logger
 
 ---
 
-## 🛠️ Commands
-- `npm run dev`: Start development server (with ts-node-dev)
-- `npm run build`: Compile TypeScript to JavaScript
-- `npm start`: Run production build
-- `npx drizzle-kit push`: Sync schema to database
+## 🚀 Getting Started
+
+1. **Install Dependencies**:
+   ```bash
+   pnpm install
+   ```
+
+2. **Environment Configuration**:
+   Create a `.env` file based on `.env.example`.
+
+3. **Database Setup**:
+   ```bash
+   # Push schema changes to DB
+   npx drizzle-kit push
+   ```
+
+4. **Run Servers**:
+   ```bash
+   # Start API and Collaboration Server in development
+   pnpm run dev
+   ```
+
+---
+
+##  Scalability & Reliability
+
+- **Circuit Breaker**: Protected external service calls (Resend/R2/converter-service) via Opossum.
+er service- **Rate Limiting**: Distributed rate limiting per IP/Token using Redis.
+- **Health Checks**: Integrated health endpoints for Docker orchestration.
+- **Graceful Shutdown**: Handles SIGTERM/SIGINT to safely close DB and Redis connections.
