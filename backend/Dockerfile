@@ -24,4 +24,4 @@ RUN npm install --omit=dev
 # Expose the port
 EXPOSE 5000
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/server.js"]
