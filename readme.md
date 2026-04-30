@@ -59,7 +59,7 @@ To fully utilize CollabDocs, you will need to provide your own API keys for the 
 | :--- | :---: | :--- | :--- |
 | **Google OAuth** | <img src="https://skillicons.dev/icons?i=gcp" height="25" /> | User authentication & social login | [Google Cloud Console](https://console.cloud.google.com/) |
 | **Cloudflare R2** | <img src="https://skillicons.dev/icons?i=cloudflare" height="25" /> | Image uploads and document storage | [Cloudflare Dashboard](https://dash.cloudflare.com/) |
-| **Resend** | <img src="https://skillicons.dev/icons?i=gmail" height="25" /> | Welcome emails and invite notifications | [Resend Dashboard](https://resend.com/) |
+| **Resend** | <img src="https://cdn.resend.com/brand/resend-icon-white.png" height="25" /> | Welcome emails and invite notifications | [Resend Dashboard](https://resend.com/) |
 
 ---
 
