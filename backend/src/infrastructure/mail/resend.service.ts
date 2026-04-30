@@ -34,16 +34,16 @@ export class ResendService {
             const templatePath = path.join(__dirname, `${templateName}.ejs`);
             const html = await ejs.renderFile(templatePath, data);
 
-            const result = await this.breaker.fire({
+            const result = (await this.breaker.fire({
                 from: `collabdocs <no-reply@${_config.VERIFIED_DOMAIN}>`,
                 to,
                 subject,
                 html,
-            });
+            })) as { data: any; error: any };
 
             if (result.error) {
                 logger.error(result.error, "Failed to send email via Resend");
-                throw new Error(result.error.message);
+                throw new Error(result.error.message || "Unknown error sending email");
             }
 
             return result.data;
