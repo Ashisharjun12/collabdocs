@@ -1,30 +1,39 @@
-# 🚀 Flow - Modern Collaboration & Documentation Platform
+# 🚀 CollabDocs - The Future of Team Documentation
 
-Flow is a high-performance, real-time collaborative documentation platform built with a modular architecture. It enables teams to create, manage, and collaborate on documents with a seamless, lightning-fast experience.
+CollabDocs is a high-performance, real-time collaborative documentation platform that combines the **best of Google Docs' real-time editing** with **Notion's flexible, block-based organization**. Built with a modern modular monolith architecture, it provides a seamless, conflict-free environment for teams to think and write together.
 
 ---
 
-##  Overview
-<!-- Space for a professional hero image or screenshot of the app -->
-![Flow Hero Screenshot](https://via.placeholder.com/1200x600?text=Flow+Dashboard+Preview)
+## 📸 Overview
+<!-- Replace the URL below with your actual screenshot or hero image URL -->
+![CollabDocs Preview](https://ik.imagekit.io/aevhlnk0h/Screenshot%202026-04-30%20172201.png)
+
+---
+
+## ✨ Core Highlights
+- **Google Docs Sync**: Real-time multi-user editing powered by **Yjs CRDT** (Conflict-free Replicated Data Types) ensuring zero conflicts and sub-20ms sync latency.
+- **Notion-like Editor**: A rich, block-based editing experience with support for slash commands, markdown, and embedded media.
+- **Scalable Storage**: High-durability file and asset management using **Cloudflare R2** (S3-Compatible Object Storage).
+- **Enterprise Grade**: Built with a modular monorepo structure, ensuring strict separation of concerns and high maintainability.
 
 ---
 
 ##  Architecture & Project Structure
 
-Flow is organized as a modular monorepo, separating concerns between user experience, core logic, and heavy-duty processing.
+CollabDocs is organized as a modular monorepo, separating the user experience from core business logic and high-intensity processing.
 
 ```bash
 collabdocs/
-├──  frontend/            # React/Vite - Modern UI/UX with TailwindCSS
-├──  backend/             # Node.js Modular Monolith - Core API & Business Logic
+├──  frontend/            # React/Vite - Modern UI/UX with Tiptap & Yjs
+├──  backend/             # Node.js Modular Monolith - Drizzle ORM & Postgres
 ├──  converter-service/   # Python - High-performance document conversion engine
 └──  .gitignore           # Global monorepo ignore rules
 ```
 
+
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### **Frontend**
 - **Framework**: React 19 (Vite)
@@ -35,15 +44,17 @@ collabdocs/
 
 ### **Backend**
 - **Runtime**: Node.js (Express)
-- **Database**: PostgreSQL
-- **ORM**: Drizzle ORM
+- **Database**: PostgreSQL (Managed persistence)
+- **ORM**: Drizzle ORM (Type-safe SQL queries)
 - **Authentication**: Passport.js (JWT & Google OAuth 2.0)
-- **Async Tasks**: BullMQ (Redis)
-- **Real-time**: Socket.io Server
+- **Task Orchestration**: BullMQ (Distributed job processing)
+- **Caching & State**: Redis (Pub/Sub & Session management)
+- **Real-time**: Socket.io Server (Redis-backed horizontal scaling)
 
-### **Services**
-- **Storage**: Cloudflare R2 (S3 Compatible)
-- **Conversion**: Python (Flask/FastAPI style engine)
+### **Infrastructure & Storage**
+- **Object Storage**: Cloudflare R2 (Highly available asset storage)
+- **Sync Engine**: Yjs CRDT (Distributed document state)
+- **Document Conversion**: Python (Dedicated high-perf engine)
 
 ---
 
