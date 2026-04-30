@@ -22,6 +22,7 @@ import {
 } from './ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
+import collabLogo from '../assets/collabdocs_favicon.svg';
 
 const Navbar = ({ showSearch = true, onMenuClick }) => {
   const { authUser, logout } = useAuthStore();
@@ -40,11 +41,11 @@ const Navbar = ({ showSearch = true, onMenuClick }) => {
             <Menu className="w-5 h-5" />
           </Button>
         )}
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
-          <div className="w-7 h-7 bg-[#1D9E75] rounded-lg flex items-center justify-center shadow-lg shadow-[#1D9E75]/20">
-            <Layout className="text-white w-4 h-4" />
+        <div className="flex items-center gap-2.5 cursor-pointer group" onClick={() => navigate('/dashboard')}>
+          <div className="w-8 h-8 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+            <img src={collabLogo} alt="CollabDocs Logo" className="w-full h-full object-contain" />
           </div>
-          <span className="text-lg font-semibold tracking-tight text-white">
+          <span className="text-xl font-bold tracking-tight text-white leading-none">
             Collab<span className="text-[#1D9E75]">Docs</span>
           </span>
         </div>

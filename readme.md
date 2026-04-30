@@ -46,8 +46,9 @@ cp .env.example .env
 docker compose up --build
 ```
 Once the containers are running:
-- **Frontend**: [http://localhost](http://localhost)
+- **Frontend**: [http://localhost:80](http://localhost:80)
 - **Backend API**: [http://localhost:5000](http://localhost:5000)
+- **Real-time Sync (Hocuspocus)**: [http://localhost:3001](http://localhost:3001)
 
 ---
 
@@ -64,14 +65,16 @@ To fully utilize CollabDocs, you will need to provide your own API keys for the 
 ---
 
 
-##  Architecture & Project Structure
+## Architecture & Project Structure
 
 CollabDocs is organized as a modular monorepo, separating the user experience from core business logic and high-intensity processing.
 
 ```bash
 collabdocs/
 ├──  frontend/            # React/Vite - Modern UI/UX with Tiptap & Yjs
-├──  backend/             # Node.js Modular Monolith - Drizzle ORM & Postgres
+├──  backend/             # Node.js Modular Monolith
+│   ├──  API Server       # Port 5000: Handles Auth, CRUD, and Workspaces
+│   └──  Collab Server    # Port 3001: Standalone Hocuspocus (Yjs Sync)
 ├──  converter-service/   # Python - High-performance document conversion engine
 └──  .gitignore           # Global monorepo ignore rules
 ```

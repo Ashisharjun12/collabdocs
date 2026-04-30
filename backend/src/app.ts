@@ -39,7 +39,6 @@ export class App {
     private setupGateway() {
         Gateway.apply(this.app);
     }
-
     private setupRoutes() {
         this.app.get("/api/health", (req, res) => {
             res.status(200).json({
@@ -49,7 +48,6 @@ export class App {
             });
         });
     }
-
     private setupErrorHandling() {
         this.app.use(errorHandler);
     }

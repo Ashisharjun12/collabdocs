@@ -1,17 +1,17 @@
 import React from 'react';
-import { Layout } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import collabLogo from '../../assets/collabdocs_favicon.svg';
 
 const LandingNavbar = () => {
   const navigate = useNavigate();
 
   return (
     <nav className="flex items-center justify-between px-6 md:px-12 py-5 bg-[#0f1117] border-b border-white/[0.05] sticky top-0 z-50 backdrop-blur-xl">
-      <div className="flex items-center gap-2.5 cursor-pointer group" onClick={() => navigate('/')}>
-        <div className="w-9 h-9 bg-[#1D9E75] rounded-xl flex items-center justify-center shadow-lg shadow-[#1D9E75]/20 group-hover:scale-105 transition-transform duration-300">
-          <Layout className="text-white w-5 h-5" />
+      <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
+        <div className="w-10 h-10 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+          <img src={collabLogo} alt="CollabDocs Logo" className="w-full h-full object-contain" />
         </div>
-        <span className="text-xl font-bold tracking-tight text-white">
+        <span className="text-2xl font-bold tracking-tight text-white leading-none">
           Collab<span className="text-[#1D9E75]">Docs</span>
         </span>
       </div>
