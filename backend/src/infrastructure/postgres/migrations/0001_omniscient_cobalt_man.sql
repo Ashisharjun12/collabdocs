@@ -1,0 +1,1 @@
+ALTER TABLE "documents" ADD COLUMN "show_public_presence" boolean DEFAULT true NOT NULL;

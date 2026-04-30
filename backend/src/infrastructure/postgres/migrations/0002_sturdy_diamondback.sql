@@ -1,0 +1,1 @@
+ALTER TABLE "documents" DROP COLUMN "show_public_presence";
