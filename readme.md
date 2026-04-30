@@ -21,6 +21,49 @@ CollabDocs is a high-performance, real-time collaborative documentation platform
 
 ---
 
+## 🚀 Getting Started (Docker Compose)
+<p align="left">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=docker" height="40" alt="docker logo" />
+  </a>
+</p>
+
+The fastest way to get CollabDocs running locally is using Docker.
+
+### 1. Prerequisites
+Ensure you have the following installed:
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+### 2. Configure Environment
+Copy the example environment file and fill in your credentials.
+```bash
+cp .env.example .env
+```
+
+### 3. Launch the Platform
+```bash
+docker compose up --build
+```
+Once the containers are running:
+- **Frontend**: [http://localhost](http://localhost)
+- **Backend API**: [http://localhost:5000](http://localhost:5000)
+
+---
+
+## External Service Requirements
+
+To fully utilize CollabDocs, you will need to provide your own API keys for the following services (place them in your `.env` file):
+
+| Service | Logo | Purpose | Source |
+| :--- | :---: | :--- | :--- |
+| **Google OAuth** | <img src="https://skillicons.dev/icons?i=gcp" height="25" /> | User authentication & social login | [Google Cloud Console](https://console.cloud.google.com/) |
+| **Cloudflare R2** | <img src="https://skillicons.dev/icons?i=cloudflare" height="25" /> | Image uploads and document storage | [Cloudflare Dashboard](https://dash.cloudflare.com/) |
+| **Resend** | <img src="https://skillicons.dev/icons?i=gmail" height="25" /> | Welcome emails and invite notifications | [Resend Dashboard](https://resend.com/) |
+
+---
+
+
 ##  Architecture & Project Structure
 
 CollabDocs is organized as a modular monorepo, separating the user experience from core business logic and high-intensity processing.
@@ -33,17 +76,16 @@ collabdocs/
 └──  .gitignore           # Global monorepo ignore rules
 ```
 
-
 ---
 
-## Technology Stack
+##  Technology Stack
 
 ### **Frontend**
 - **Framework**: React 19 (Vite)
+- **Styling**: Tailwind CSS
 - **State Management**: Zustand
-- **Real-time**: Socket.io Client
-- **Styling**: Tailwind CSS / Lucide Icons
-- **Rich Text**: Tiptap Editor / ProseMirror
+- **Editor Engine**: Tiptap (Prosemirror)
+- **Collaboration**: Yjs & Hocuspocus
 
 ### **Backend**
 - **Runtime**: Node.js (Express)
@@ -61,25 +103,6 @@ collabdocs/
 
 ---
 
-## 🚀 Getting Started
-
-### **Prerequisites**
-- Node.js (v18+)
-- PostgreSQL
-- Redis
-- Python 3.10+ (for converter service)
-
-### **Installation**
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/flow.git
-   cd flow
-   ```
-
-2. **Setup Backend**:
-   ```bash
-   cd backend
    npm install
    # Configure .env based on .env.sample
    npm run dev
