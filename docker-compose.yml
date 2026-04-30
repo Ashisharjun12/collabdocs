@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # Database: PostgreSQL
+  db:
+    image: postgres:16-alpine
+    container_name: collabdocs-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-collabdocs}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Cache & Queue: Redis
+  redis:
+    image: redis:7-alpine
+    container_name: collabdocs-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # Backend API
+  backend:
+    build: ./backend
+    container_name: collabdocs-backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-password}@db:5432/${DB_NAME:-collabdocs}
+      REDIS_DATABASE_URI: redis://redis:6379
+
+  # Frontend Web
+  frontend:
+    build: ./frontend
+    container_name: collabdocs-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    env_file:
+      - .env
+
+  # Converter Service
+  converter:
+    build: ./converter-service
+    container_name: collabdocs-converter
+    restart: always
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    environment:
+      REDIS_DATABASE_URI: redis://redis:6379
+
+volumes:
+  postgres_data:
+  redis_data:
