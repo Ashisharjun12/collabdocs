@@ -167,18 +167,20 @@ export class AuthController {
  
   // helper to set secure cookies
   private setTokenCookies(res: Response, accessToken: string, refreshToken: string) {
+    const isProduction = _config.NODE_ENV === "production";
+
     res.cookie("access_token", accessToken, {
       httpOnly: true,
-      secure: _config.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       path: "/",
       maxAge: 15 * 60 * 1000, // 15 mins
     });
 
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      secure: _config.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
