@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { Globe, ShieldAlert } from 'lucide-react';
 import { useAuthStore } from '../../store/auth-store';
 import { useHocuspocusProvider } from '@hocuspocus/provider-react';
+import SEO from '../../components/SEO';
 
 
 // ── Wrapper to wait for Sync and get Doc ──────────────────────────────────
@@ -154,6 +155,11 @@ const PublicEditorPage = () => {
 
   return (
     <div className="h-screen w-full bg-[#0a0b10] overflow-hidden flex flex-col">
+      <SEO 
+        title={doc.title}
+        description={`Publicly shared document: ${doc.title}. View and collaborate in real-time.`}
+        url={`/p/${slug}`}
+      />
       {/* Mini Public Header */}
       <header className="h-12 border-b border-white/5 flex items-center justify-between px-6 bg-[#0a0b10]/60 backdrop-blur-xl shrink-0">
         <div className="flex items-center gap-3">

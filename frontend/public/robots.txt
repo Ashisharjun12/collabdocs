@@ -1,0 +1,13 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /signup
+Allow: /p/
+
+# Disallow private areas
+Disallow: /dashboard/
+Disallow: /settings/
+Disallow: /auth/callback
+
+Sitemap: https://www.thecollabdocs.tech/sitemap.xml

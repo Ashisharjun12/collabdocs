@@ -18,7 +18,7 @@ const AppPreview = () => {
                 <div className="w-3 h-3 rounded-full bg-[#28c840]" />
               </div>
               <div className="flex-1 max-w-md bg-[#13151f] border border-[#1e2130] rounded-lg px-4 py-1 text-[11px] text-slate-500 font-medium">
-                collabdocs.io/workspace/cs-team/backend-arch
+                thecollabdocs.tech/workspace/cs-team/backend-arch
               </div>
             </div>
 

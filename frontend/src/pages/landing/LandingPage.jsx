@@ -8,12 +8,19 @@ import TestimonialsSection from './TestimonialsSection';
 import LandingFooter from './LandingFooter';
 import { Mail, ArrowRight, Zap, Shield, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import SEO from '../../components/SEO';
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#0f1117] text-slate-200 selection:bg-[#1D9E75]/30 selection:text-white">
+      <SEO 
+        title="CollabDocs | Real-time Collaborative Document Editor"
+        description="Experience the future of team collaboration. Write, edit, and brainstorm together in real-time with CollabDocs."
+        keywords="real-time editor, collaborative writing, team documents, CollabDocs landing"
+        url="/"
+      />
       <LandingNavbar />
       
       <main>

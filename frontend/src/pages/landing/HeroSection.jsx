@@ -17,11 +17,11 @@ const HeroSection = () => {
         </div>
 
         <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-[1.1] max-w-4xl mb-8">
-          Documents your whole team can <span className="text-[#1D9E75]">write, edit, and think in</span> — together
+          The <span className="text-[#1D9E75]">real-time collaborative document editor</span> your whole team can think in — together
         </h1>
 
         <p className="text-lg md:text-xl text-slate-400 font-medium max-w-2xl mb-12 leading-relaxed">
-          CollabDocs is a modern collaborative document editor. Create workspaces, invite your team, and edit in real-time — with comments, version history, and powerful sharing built in.
+          CollabDocs is the fastest team collaboration software for modern workflows. Create workspaces, invite your team, and edit documents in real-time with zero latency.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-16">
