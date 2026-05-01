@@ -8,7 +8,7 @@ import { _config } from '../../config/config.js';
 export const apiRateLimiter = new RateLimiterRedis({
   storeClient: RedisClient.getConnection(),
   keyPrefix: 'api_limit',
-  points: 500, 
+  points: 500,
   duration: 60,
 });
 
@@ -17,7 +17,7 @@ export const authRateLimiter = new RateLimiterRedis({
   storeClient: RedisClient.getConnection(),
   keyPrefix: 'auth_limit',
   points: 100,
-  duration: 15 * 60,
+  duration: 2 * 60, // 2 mins 
 });
 
 
