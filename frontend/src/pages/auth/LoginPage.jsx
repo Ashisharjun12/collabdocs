@@ -9,7 +9,6 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { login, loginWithGoogle, isLoading, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
-
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/dashboard');
@@ -37,7 +36,7 @@ const LoginPage = () => {
       <div className="w-full max-w-md bg-[#13151f]/80 backdrop-blur-xl border border-[#1e2130] rounded-2xl shadow-2xl overflow-hidden animate-in fade-in duration-500">
         {/* Subtle top highlight */}
         <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#1D9E75] to-transparent opacity-50"></div>
-        
+
         <div className="p-8">
           {/* Logo Section */}
           <div className="flex flex-col items-center justify-center gap-3 mb-10">
