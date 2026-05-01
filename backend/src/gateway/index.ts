@@ -1,6 +1,6 @@
 import { Application } from "express";
 import { logger } from "../utils/logger.js";
-import { apiRateLimitMiddleware } from "../infrastructure/redis/rate-limit.js";
+import { apiRateLimitMiddleware, authRateLimitMiddleware } from "../infrastructure/redis/rate-limit.js";
 import authRoutes from "../modules/auth/auth.routes.js";
 import userRoutes from "../modules/user/user.route.js";
 import uploadRoutes from "../modules/upload/upload.route.js";
@@ -20,7 +20,7 @@ export class Gateway {
         app.use(prefix, apiRateLimitMiddleware);
 
         // Register module routes
-        app.use(`${prefix}/auth`, authRoutes);
+        app.use(`${prefix}/auth`, authRateLimitMiddleware, authRoutes);
         app.use(`${prefix}/users`, userRoutes);
         app.use(`${prefix}/upload`, uploadRoutes);
         app.use(`${prefix}/workspace`, workspaceRoutes);

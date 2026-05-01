@@ -46,6 +46,7 @@ services:
     environment:
       POSTGRES_DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-password}@db:5432/${DB_NAME:-collabdocs}
       REDIS_DATABASE_URI: redis://redis:6379
+      RATE_LIMIT_ENABLED: ${RATE_LIMIT_ENABLED:-false}
 
   # Real-time Collaboration Server (Hocuspocus)
   collab-server:

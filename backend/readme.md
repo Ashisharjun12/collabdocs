@@ -112,6 +112,6 @@ CollabDocs utilizes a hybrid backend strategy to ensure maximum responsiveness a
 ##  Scalability & Reliability
 
 - **Circuit Breaker**: Protected external service calls (Resend/R2/converter-service) via Opossum.
-er service- **Rate Limiting**: Distributed rate limiting per IP/Token using Redis.
+- **Rate Limiting**: Distributed rate limiting per IP/Token using Redis.
 - **Health Checks**: Integrated health endpoints for Docker orchestration.
 - **Graceful Shutdown**: Handles SIGTERM/SIGINT to safely close DB and Redis connections.

@@ -8,8 +8,8 @@ import { _config } from '../../config/config.js';
 export const apiRateLimiter = new RateLimiterRedis({
   storeClient: RedisClient.getConnection(),
   keyPrefix: 'api_limit',
-  points: 500,
-  duration: 60,
+  points: 100, // 100 req per min 
+  duration: 60, // 1 min 
 });
 
 // auth rate limit
@@ -24,8 +24,8 @@ export const authRateLimiter = new RateLimiterRedis({
 //rate limit middleware
 const createRateLimitMiddleware = (limiter: RateLimiterRedis) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    // Skip rate limiting in development
-    if (_config.NODE_ENV !== 'production') {
+    // Skip rate limiting if disabled in config
+    if (!_config.RATE_LIMIT_ENABLED) {
       return next();
     }
 
