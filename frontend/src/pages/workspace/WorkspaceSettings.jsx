@@ -90,7 +90,7 @@ const WorkspaceSettings = () => {
   if (!activeWorkspace) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-10rem)]">
-        <Loader2 className="w-10 h-10 text-[#1D9E75] animate-spin" />
+        <Loader2 className="w-10 h-10 text-[#3ecf8e] animate-spin" />
       </div>
     );
   }
@@ -98,48 +98,48 @@ const WorkspaceSettings = () => {
   const isOwner = activeWorkspace.ownerId === authUser?.id;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12 selection:bg-[#3ecf8e]/30 selection:text-[#fafafa]">
       {/* Header */}
       <div className="mb-10">
-        <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-[#1D9E75]/10 flex items-center justify-center border border-[#1D9E75]/20">
-            <Settings className="w-6 h-6 text-[#1D9E75]" />
+        <h1 className="text-3xl font-medium text-[#fafafa] tracking-tight flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-[#3ecf8e]/10 flex items-center justify-center border border-[#3ecf8e]/20">
+            <Settings className="w-6 h-6 text-[#3ecf8e]" />
           </div>
           Workspace Settings
         </h1>
-        <p className="text-slate-500 mt-2 font-medium ml-16">
+        <p className="text-[#898989] mt-3 font-normal ml-16 text-[14px]">
           Configure preferences and access levels for your workspace
         </p>
       </div>
 
-      <div className="space-y-12">
+      <div className="space-y-10">
         {/* General Settings */}
-        <section className="bg-[#13151f]/30 border border-[#1e2130] rounded-[32px] p-8 backdrop-blur-sm shadow-xl">
+        <section className="bg-[#1c1c1c] border border-[#242424] rounded-xl p-8 shadow-2xl">
           <div className="flex items-center gap-3 mb-8">
-            <div className="p-2 bg-blue-400/10 rounded-xl border border-blue-400/20">
-              <Info className="w-4 h-4 text-blue-400" />
+            <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
+              <Info className="w-4 h-4 text-blue-500" />
             </div>
-            <h2 className="text-lg font-bold text-white tracking-tight">General Information</h2>
+            <h2 className="text-lg font-medium text-[#fafafa] tracking-tight">General Information</h2>
           </div>
 
           <div className="grid gap-8 max-w-2xl">
             <div className="space-y-2">
-              <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">Workspace Name</label>
+              <label className="text-[12px] font-medium uppercase tracking-[1.2px] text-[#898989] ml-1">Workspace Name</label>
               <Input 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter workspace name"
-                className="bg-[#0d0f18] border-[#1e2130] focus:border-[#1D9E75]/50 h-12 rounded-xl text-white font-bold"
+                className="bg-[#171717] border-[#2e2e2e] focus:border-[#3ecf8e]/50 h-12 rounded-lg text-[#fafafa] placeholder:text-[#4d4d4d]"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">Workspace Slug (URL)</label>
-              <div className="flex items-center gap-3 bg-[#0d0f18] border border-[#1e2130] h-12 rounded-xl px-4 text-slate-500 font-bold select-none cursor-not-allowed">
+              <label className="text-[12px] font-medium uppercase tracking-[1.2px] text-[#898989] ml-1">Workspace Slug (URL)</label>
+              <div className="flex items-center gap-3 bg-[#171717] border border-[#2e2e2e] h-12 rounded-lg px-4 text-[#4d4d4d] font-normal select-none cursor-not-allowed">
                 <span>collabdocs.com/workspace/</span>
-                <span className="text-slate-300">{activeWorkspace.slug}</span>
+                <span className="text-[#898989]">{activeWorkspace.slug}</span>
               </div>
-              <p className="text-[10px] text-slate-600 font-bold mt-1 ml-1 flex items-center gap-1">
+              <p className="text-[11px] text-[#4d4d4d] font-normal mt-2 ml-1 flex items-center gap-1.5">
                 <Info className="w-3 h-3" /> Slugs are permanent and cannot be changed after creation.
               </p>
             </div>
@@ -147,12 +147,12 @@ const WorkspaceSettings = () => {
         </section>
 
         {/* Privacy & Visibility */}
-        <section className="bg-[#13151f]/30 border border-[#1e2130] rounded-[32px] p-8 backdrop-blur-sm shadow-xl">
+        <section className="bg-[#1c1c1c] border border-[#242424] rounded-xl p-8 shadow-2xl">
           <div className="flex items-center gap-3 mb-8">
-            <div className="p-2 bg-amber-400/10 rounded-xl border border-amber-400/20">
-              <Lock className="w-4 h-4 text-amber-400" />
+            <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+              <Lock className="w-4 h-4 text-amber-500" />
             </div>
-            <h2 className="text-lg font-bold text-white tracking-tight">Privacy & Visibility</h2>
+            <h2 className="text-lg font-medium text-[#fafafa] tracking-tight">Privacy & Visibility</h2>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -164,15 +164,15 @@ const WorkspaceSettings = () => {
               <button
                 key={option.id}
                 onClick={() => setVisibility(option.id)}
-                className={`flex flex-col items-start p-5 rounded-2xl border transition-all text-left group
+                className={`flex flex-col items-start p-5 rounded-lg border transition-all text-left group cursor-pointer
                   ${visibility === option.id 
-                    ? 'bg-[#1D9E75]/10 border-[#1D9E75] ring-4 ring-[#1D9E75]/5' 
-                    : 'bg-[#0d0f18] border-[#1e2130] hover:border-[#1D9E75]/30'
+                    ? 'bg-[#3ecf8e]/10 border-[#3ecf8e] shadow-sm' 
+                    : 'bg-[#171717] border-[#2e2e2e] hover:border-[#4d4d4d]'
                   }`}
               >
-                <option.icon className={`w-5 h-5 mb-3 transition-colors ${visibility === option.id ? 'text-[#1D9E75]' : 'text-slate-500 group-hover:text-slate-300'}`} />
-                <span className={`text-sm font-bold mb-1 ${visibility === option.id ? 'text-white' : 'text-slate-400'}`}>{option.label}</span>
-                <span className="text-[11px] text-slate-500 font-medium leading-tight">{option.desc}</span>
+                <option.icon className={`w-5 h-5 mb-3 transition-colors ${visibility === option.id ? 'text-[#3ecf8e]' : 'text-[#4d4d4d] group-hover:text-[#fafafa]'}`} />
+                <span className={`text-sm font-medium mb-1 ${visibility === option.id ? 'text-[#fafafa]' : 'text-[#898989]'}`}>{option.label}</span>
+                <span className="text-[11px] text-[#4d4d4d] font-normal leading-tight">{option.desc}</span>
               </button>
             ))}
           </div>
@@ -183,49 +183,49 @@ const WorkspaceSettings = () => {
           <Button 
             onClick={handleSave}
             disabled={isSaving}
-            className="bg-[#1D9E75] hover:bg-[#1D9E75]/90 text-white rounded-2xl h-14 px-10 font-black text-sm tracking-tight shadow-lg shadow-[#1D9E75]/20 cursor-pointer"
+            className="bg-[#3ecf8e] hover:bg-[#00c573] text-[#171717] rounded-lg h-12 px-8 font-medium text-sm tracking-tight border-none cursor-pointer"
           >
-            {isSaving ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : <Save className="w-5 h-5 mr-2" />}
-            Save Workspace Changes
+            {isSaving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
+            Save Changes
           </Button>
         </div>
 
         {/* Danger Zone */}
         {isOwner && !activeWorkspace.isPersonal && (
           <>
-            <Separator className="bg-[#1e2130] my-8" />
-            <section className="bg-red-400/5 border border-red-400/20 rounded-[32px] p-8 backdrop-blur-sm">
+            <Separator className="bg-[#2e2e2e] my-8" />
+            <section className="bg-red-500/5 border border-red-500/20 rounded-xl p-8 backdrop-blur-sm">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-red-400/10 rounded-xl border border-red-400/20">
-                  <AlertTriangle className="w-5 h-5 text-red-400" />
+                <div className="p-2 bg-red-500/10 rounded-lg border border-red-500/20">
+                  <AlertTriangle className="w-5 h-5 text-red-500" />
                 </div>
-                <h2 className="text-lg font-bold text-red-400 tracking-tight">Danger Zone</h2>
+                <h2 className="text-lg font-medium text-red-500 tracking-tight">Danger Zone</h2>
               </div>
 
               <div className="space-y-6">
-                <div className="bg-red-400/10 border border-red-400/10 p-5 rounded-2xl">
-                  <h3 className="text-white font-bold text-sm mb-1 uppercase tracking-wider">Delete this workspace</h3>
-                  <p className="text-red-400/70 text-xs font-medium leading-relaxed">
+                <div className="bg-red-500/10 border border-red-500/10 p-5 rounded-lg">
+                  <h3 className="text-[#fafafa] font-medium text-sm mb-1 uppercase tracking-wider">Delete this workspace</h3>
+                  <p className="text-red-500/70 text-[12px] font-normal leading-relaxed">
                     Once you delete a workspace, there is no going back. All documents and data associated with this workspace will be permanently erased.
                   </p>
                 </div>
 
                 <div className="space-y-4">
-                  <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest px-1">
-                    Type <span className="text-white">"{activeWorkspace.name}"</span> to confirm
+                  <p className="text-[11px] text-[#4d4d4d] font-medium uppercase tracking-[1.2px] px-1">
+                    Type <span className="text-[#fafafa]">"{activeWorkspace.name}"</span> to confirm
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <Input 
                       value={deleteConfirm}
                       onChange={(e) => setDeleteConfirm(e.target.value)}
                       placeholder="Type workspace name here"
-                      className="bg-[#0d0f18] border-red-400/20 focus:border-red-400/50 h-12 rounded-xl text-white font-bold placeholder:text-slate-700"
+                      className="bg-[#171717] border-red-500/20 focus:border-red-500/50 h-12 rounded-lg text-[#fafafa] placeholder:text-[#2e2e2e]"
                     />
                     <Button 
                       onClick={handleDelete}
                       disabled={isDeleting || deleteConfirm !== activeWorkspace.name}
                       variant="destructive"
-                      className="h-12 rounded-xl px-8 font-black text-xs uppercase tracking-widest cursor-pointer"
+                      className="h-12 rounded-lg px-8 font-medium text-xs uppercase tracking-[1.2px] cursor-pointer"
                     >
                       {isDeleting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Trash2 className="w-4 h-4 mr-2" />}
                       Delete Workspace
@@ -238,13 +238,13 @@ const WorkspaceSettings = () => {
         )}
 
         {activeWorkspace.isPersonal && (
-          <div className="bg-[#1D9E75]/5 border border-[#1D9E75]/10 p-6 rounded-[32px] flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-[#1D9E75]/10 flex items-center justify-center border border-[#1D9E75]/20 flex-shrink-0">
-              <Shield className="w-5 h-5 text-[#1D9E75]" />
+          <div className="bg-[#3ecf8e]/5 border border-[#3ecf8e]/10 p-6 rounded-xl flex items-center gap-5">
+            <div className="w-10 h-10 rounded-lg bg-[#3ecf8e]/10 flex items-center justify-center border border-[#3ecf8e]/20 flex-shrink-0">
+              <Shield className="w-5 h-5 text-[#3ecf8e]" />
             </div>
             <div>
-              <h4 className="text-white font-bold text-sm tracking-tight">Personal Workspace</h4>
-              <p className="text-slate-500 text-xs mt-0.5 font-medium">This is your default workspace and cannot be deleted.</p>
+              <h4 className="text-[#fafafa] font-medium text-sm tracking-tight">Personal Workspace</h4>
+              <p className="text-[#898989] text-[12px] mt-1 font-normal">This is your default workspace and cannot be deleted.</p>
             </div>
           </div>
         )}

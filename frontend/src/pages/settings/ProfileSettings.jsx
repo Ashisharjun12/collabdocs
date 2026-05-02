@@ -129,42 +129,39 @@ const ProfileSettings = () => {
 
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white mb-1 tracking-tight">Profile Settings</h1>
-        <p className="text-slate-500 text-sm">Manage your public profile and account details.</p>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-4xl">
+      <div className="mb-10">
+        <h1 className="text-3xl font-medium text-[#fafafa] mb-1.5 tracking-tight">Profile Settings</h1>
+        <p className="text-[#898989] text-sm">Manage your personal information and profile picture.</p>
       </div>
 
-      <div className="grid gap-6">
-        <div className="bg-[#13151f]/50 backdrop-blur-sm border border-[#1e2130] rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#1D9E75]/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="grid gap-8">
+        <div className="bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl p-8 sm:p-10 shadow-2xl relative overflow-hidden group/card">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#3ecf8e]/5 rounded-full blur-[100px] pointer-events-none group-hover/card:bg-[#3ecf8e]/10 transition-colors duration-700"></div>
           
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 mb-10">
-            <div className="relative group">
-                <Avatar className="w-28 h-28 ring-4 ring-[#1D9E75]/10 shadow-2xl transition-transform duration-300 group-hover:scale-[1.02] cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-10 mb-12">
+            <div className="relative group/avatar">
+                <Avatar 
+                  className="w-32 h-32 ring-4 ring-[#2e2e2e] group-hover/avatar:ring-[#3ecf8e]/20 shadow-2xl transition-all duration-500 cursor-pointer" 
+                  onClick={() => fileInputRef.current?.click()}
+                >
                     <AvatarImage src={avatarUrl} className="object-cover" />
-
-                    <AvatarFallback className="bg-[#1D9E75] text-white text-4xl font-bold">
-                        {name?.substring(0, 2).toUpperCase() || 'AD'}
+                    <AvatarFallback className="bg-[#171717] text-[#3ecf8e] text-4xl font-medium border border-[#2e2e2e]">
+                        {name?.substring(0, 1).toUpperCase() || 'U'}
                     </AvatarFallback>
                 </Avatar>
 
-                <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                   <span className="text-[10px] text-white font-bold uppercase tracking-wider bg-[#1D9E75] px-2 py-1 rounded">Change</span>
-                </div>
-
-                
                 {isUploading && (
-                    <div className="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center z-10 animate-in fade-in">
-                        <Loader2 className="w-8 h-8 text-[#1D9E75] animate-spin mb-1" />
-                        <span className="text-[10px] text-white font-bold uppercase tracking-widest">Uploading</span>
+                    <div className="absolute inset-0 bg-[#171717]/80 rounded-full flex flex-col items-center justify-center z-10 animate-in fade-in">
+                        <Loader2 className="w-8 h-8 text-[#3ecf8e] animate-spin mb-1.5" />
+                        <span className="text-[10px] text-[#fafafa] font-bold uppercase tracking-widest">Uploading</span>
                     </div>
                 )}
                 
                 <button 
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isUploading}
-                    className="absolute bottom-0 right-0 w-9 h-9 bg-[#1D9E75] hover:bg-[#168a65] text-white rounded-full flex items-center justify-center shadow-lg border-2 border-[#13151f] transition-all hover:scale-110 active:scale-95 cursor-pointer disabled:opacity-50"
+                    className="absolute bottom-0 right-0 w-10 h-10 bg-[#3ecf8e] hover:bg-[#34b27b] text-[#171717] rounded-lg flex items-center justify-center shadow-xl border-4 border-[#1c1c1c] transition-all hover:scale-110 active:scale-95 cursor-pointer disabled:opacity-50 z-20"
                     title="Change Photo"
                 >
                     <Camera className="w-4 h-4" />
@@ -181,64 +178,64 @@ const ProfileSettings = () => {
 
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-semibold text-white">Profile Picture</h3>
-                <p className="text-sm text-slate-500 mt-1 max-w-xs leading-relaxed">
-                  Upload a professional photo. JPG, PNG or WebP allowed. Max 5MB.
+                <h3 className="text-xl font-medium text-[#fafafa] tracking-tight">Profile Picture</h3>
+                <p className="text-sm text-[#898989] mt-1.5 max-w-xs leading-relaxed">
+                  Upload a new photo for your profile. <br />
+                  <span className="text-xs">Supports JPG, PNG or WebP. Max 5MB.</span>
                 </p>
               </div>
               <div className="flex gap-3">
                 <Button 
                     variant="outline"
-                    className="border-[#1e2130] text-red-400 hover:text-red-300 hover:bg-red-400/5 h-9 px-4 gap-2 border-dashed"
+                    className="bg-[#171717] border-[#2e2e2e] text-red-500/80 hover:text-red-500 hover:bg-red-500/5 h-10 px-5 gap-2.5 rounded-lg text-xs font-medium transition-all cursor-pointer"
                     onClick={handleRemovePhoto}
                     disabled={!avatarUrl || isSaving}
-
                 >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5" />
                     <span>Remove Photo</span>
                 </Button>
               </div>
             </div>
           </div>
 
-          <Separator className="bg-[#1e2130] mb-10" />
+          <Separator className="bg-[#2e2e2e] mb-12 opacity-50" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-2.5">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Full Display Name</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="space-y-3">
+              <label className="text-[10px] font-medium text-[#4d4d4d] uppercase tracking-[1.5px] ml-1">Full Display Name</label>
               <div className="relative group">
                 <Input 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="bg-[#0f1117] border-[#2a2d3a] text-white focus:border-[#1D9E75] h-12 px-4 rounded-xl transition-all focus:ring-1 focus:ring-[#1D9E75]/20 placeholder:text-slate-600 outline-none"
+                  className="bg-[#171717] border border-[#2e2e2e] text-[#fafafa] focus:border-[#3ecf8e] focus-visible:ring-[#3ecf8e]/20 h-12 px-5 rounded-lg transition-all placeholder:text-[#4d4d4d] font-medium"
                   placeholder="How should we call you?"
                 />
               </div>
-              <p className="text-[11px] text-slate-600 ml-1">Your name will be visible to collaborators.</p>
+              <p className="text-[11px] text-[#4d4d4d] ml-1">Your name will be visible to collaborators in workspaces.</p>
             </div>
             
-            <div className="space-y-2.5">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Registered Email</label>
+            <div className="space-y-3">
+              <label className="text-[10px] font-medium text-[#4d4d4d] uppercase tracking-[1.5px] ml-1">Registered Email</label>
               <Input 
                 value={authUser?.email} 
                 disabled
-                className="bg-[#0f1117]/30 border-[#1e2130] text-slate-600 cursor-not-allowed h-12 px-4 rounded-xl"
+                className="bg-[#171717]/50 border border-[#2e2e2e] text-[#4d4d4d] cursor-not-allowed h-12 px-5 rounded-lg font-medium opacity-60"
               />
-              <p className="text-[11px] text-slate-600 ml-1 italic">Email cannot be changed for security.</p>
+              <p className="text-[11px] text-[#4d4d4d] ml-1 italic">Email cannot be changed for security.</p>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-end gap-4 mt-12 pt-8 border-t border-[#1e2130]">
+          <div className="flex flex-col sm:flex-row justify-end gap-4 mt-16 pt-10 border-t border-[#2e2e2e]">
             <Button 
                 variant="ghost" 
-                className="text-slate-500 hover:text-white h-11 px-8 gap-2 hover:bg-[#1a1d28] rounded-xl transition-colors"
+                className="text-[#898989] hover:text-[#fafafa] h-11 px-8 gap-2.5 hover:bg-[#242424] rounded-lg transition-all font-medium text-sm cursor-pointer"
                 onClick={handleDiscard}
             >
                 <X className="w-4 h-4" />
                 <span>Discard Changes</span>
             </Button>
             <Button 
-                className="bg-[#1D9E75] hover:bg-[#168a65] text-white px-10 h-11 font-bold shadow-xl shadow-[#1D9E75]/20 rounded-xl gap-2 transition-all hover:translate-y-[-1px] active:translate-y-[1px]"
+                className="bg-[#3ecf8e] hover:bg-[#34b27b] text-[#171717] px-10 h-11 font-bold shadow-xl shadow-[#3ecf8e]/10 rounded-lg gap-2.5 transition-all hover:scale-[1.02] active:scale-[0.98] border-none cursor-pointer"
                 onClick={handleSave}
                 disabled={isSaving || isUploading || !hasChanges}
             >

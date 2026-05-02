@@ -66,26 +66,26 @@ const EditorHeader = ({ onToggleLeft, onToggleRight, isLeftOpen, isRightOpen, ed
   const remainingCount = collaborators.length - 3;
 
   return (
-    <header className="h-12 border-b border-white/5 flex items-center justify-between px-4 bg-[#0a0b10]/60 backdrop-blur-xl sticky top-0 z-[100]">
+    <header className="h-14 border-b border-[#2e2e2e] flex items-center justify-between px-6 bg-[#171717] sticky top-0 z-[100] shadow-sm">
       {/* Left: Navigation & Toggles */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <button
           onClick={onToggleLeft}
-          className={`p-1.5 rounded-md transition-colors ${isLeftOpen ? 'text-[#1D9E75] bg-[#1D9E75]/10' : 'text-slate-400 hover:bg-white/5'}`}
+          className={`p-2 rounded-lg transition-all cursor-pointer ${isLeftOpen ? 'text-[#3ecf8e] bg-[#3ecf8e]/10 border border-[#3ecf8e]/20' : 'text-[#898989] hover:bg-[#242424] hover:text-[#fafafa] border border-transparent'}`}
         >
           <Menu className="w-4 h-4" />
         </button>
-        <div className="hidden md:flex items-center gap-2 text-[13px] font-medium text-slate-500">
+        <div className="hidden md:flex items-center gap-3 text-[13px] font-medium text-[#4d4d4d]">
           <span 
             onClick={() => navigate(`/dashboard/workspace/${slug}`)}
-            className="hover:text-slate-300 cursor-pointer transition-colors"
+            className="hover:text-[#fafafa] cursor-pointer transition-colors tracking-tight"
           >
             Workspace
           </span>
-          <ChevronRight className="w-3 h-3 opacity-30" />
+          <ChevronRight className="w-3.5 h-3.5 opacity-40" />
         </div>
 
-        <div className="flex items-center gap-2 text-[13px] font-medium">
+        <div className="flex items-center gap-2 text-[14px] font-medium">
           <input
             id="doc-title-input"
             value={syncedTitle}
@@ -97,57 +97,56 @@ const EditorHeader = ({ onToggleLeft, onToggleRight, isLeftOpen, isRightOpen, ed
               yText.insert(0, val);
             }}
             placeholder="Untitled Document"
-            className="bg-transparent border-none text-slate-200 truncate max-w-[200px] font-semibold focus:outline-none focus:ring-0 placeholder:text-slate-700"
+            className="bg-transparent border-none text-[#fafafa] truncate max-w-[240px] font-medium tracking-tight focus:outline-none focus:ring-0 placeholder:text-[#4d4d4d]"
           />
         </div>
 
           {/* Connection Status Indicator */}
-          <div className="flex items-center ml-2 border-l border-white/10 pl-3">
+          <div className="flex items-center ml-2 border-l border-[#2e2e2e] pl-4">
             {status === 'connected' ? (
-              <div className="flex items-center gap-1.5 text-[#1D9E75] bg-[#1D9E75]/10 px-2 py-0.5 rounded-full" title="Saved to cloud">
+              <div className="flex items-center gap-1.5 text-[#3ecf8e] bg-[#3ecf8e]/10 px-2.5 py-1 rounded-md border border-[#3ecf8e]/20" title="Saved to cloud">
                 <Cloud className="w-3.5 h-3.5" />
               </div>
             ) : status === 'connecting' ? (
-              <div className="flex items-center gap-1.5 text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full" title="Connecting...">
+              <div className="flex items-center gap-1.5 text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-500/20" title="Connecting...">
                 <div className="w-3.5 h-3.5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
               </div>
             ) : (
-              <div className="flex items-center gap-1.5 text-slate-400 bg-white/5 px-2 py-0.5 rounded-full">
+              <div className="flex items-center gap-1.5 text-[#898989] bg-[#242424] px-2.5 py-1 rounded-md border border-[#2e2e2e]">
                 <WifiOff className="w-3.5 h-3.5" />
-                {isOfflineEnabled && <span className="text-[10px] font-bold uppercase tracking-wider">Saved locally</span>}
+                {isOfflineEnabled && <span className="text-[10px] font-bold uppercase tracking-[1.5px]">Local</span>}
               </div>
             )}
           </div>
         </div>
 
       {/* Right: Presence & Actions */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3">
           {/* User Presence */}
           <div
             className="relative flex items-center mr-2"
             onMouseEnter={() => setShowUsers(true)}
             onMouseLeave={() => setShowUsers(false)}
           >
-            <div className="flex -space-x-2 cursor-pointer">
+            <div className="flex -space-x-2.5 cursor-pointer">
               {displayedUsers.map((collab, i) => (
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   key={collab.clientId || i}
-                  className="w-7 h-7 rounded-full border-2 border-[#0a0b10] flex items-center justify-center text-[10px] font-bold text-white shadow-lg overflow-hidden"
+                  className="w-8 h-8 rounded-full border-2 border-[#171717] flex items-center justify-center text-[11px] font-bold text-white shadow-xl overflow-hidden ring-1 ring-white/5"
                   style={{ backgroundColor: collab.user?.color || '#334155' }}
                 >
                   {collab.user?.avatarUrl ? (
                     <img src={collab.user?.avatarUrl} alt="" className="w-full h-full object-cover" />
-
                   ) : (
                     <span>{collab.user?.name?.charAt(0).toUpperCase() || '?'}</span>
                   )}
                 </motion.div>
               ))}
               {remainingCount > 0 && (
-                <div className="w-7 h-7 rounded-full border-2 border-[#0a0b10] bg-[#16171d] flex items-center justify-center text-[10px] font-bold text-slate-400">
+                <div className="w-8 h-8 rounded-full border-2 border-[#171717] bg-[#242424] flex items-center justify-center text-[10px] font-bold text-[#898989] ring-1 ring-white/5">
                   +{remainingCount}
                 </div>
               )}
@@ -159,23 +158,22 @@ const EditorHeader = ({ onToggleLeft, onToggleRight, isLeftOpen, isRightOpen, ed
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="absolute top-full right-0 mt-2 w-56 bg-[#16171d] border border-white/10 rounded-xl shadow-2xl p-2 z-[200] backdrop-blur-2xl"
+                  className="absolute top-full right-0 mt-3 w-60 bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl shadow-2xl p-2.5 z-[200]"
                 >
-                  <div className="px-2 py-1.5 border-b border-white/5 mb-1.5">
-                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Collaborators</p>
+                  <div className="px-2 py-2 border-b border-[#2e2e2e] mb-2">
+                    <p className="text-[10px] font-medium text-[#4d4d4d] uppercase tracking-[1.5px]">Collaborators</p>
                   </div>
-                  <div className="space-y-1 max-h-60 overflow-y-auto custom-scrollbar">
+                  <div className="space-y-1 max-h-64 overflow-y-auto custom-scrollbar">
                     {collaborators.map((collab, i) => (
-                      <div key={i} className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors cursor-default group">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white overflow-hidden shrink-0 border border-white/5" style={{ backgroundColor: collab.user?.color }}>
+                      <div key={i} className="flex items-center gap-3 p-2 hover:bg-[#242424] rounded-lg transition-all cursor-default group">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white overflow-hidden shrink-0 border border-[#2e2e2e]" style={{ backgroundColor: collab.user?.color }}>
                           {collab.user?.avatarUrl ? (
                             <img src={collab.user?.avatarUrl} alt="" className="w-full h-full object-cover" />
-
                           ) : (
                             <span>{collab.user?.name?.charAt(0).toUpperCase()}</span>
                           )}
                         </div>
-                        <span className="text-xs text-slate-200 font-medium truncate">{collab.user?.name}</span>
+                        <span className="text-xs text-[#fafafa] font-medium truncate tracking-tight">{collab.user?.name}</span>
                       </div>
                     ))}
                   </div>
@@ -184,16 +182,16 @@ const EditorHeader = ({ onToggleLeft, onToggleRight, isLeftOpen, isRightOpen, ed
             </AnimatePresence>
           </div>
 
-          <div className="h-4 w-px bg-white/10 mx-1" />
+          <div className="h-5 w-px bg-[#2e2e2e] mx-1" />
 
           {/* Export Dropdown - Desktop Only */}
           <div className="relative hidden lg:block">
             <button
               onClick={() => setShowExport(!showExport)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${showExport ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-all cursor-pointer border ${showExport ? 'bg-[#242424] border-[#3ecf8e]/30 text-[#fafafa]' : 'text-[#898989] hover:text-[#fafafa] hover:bg-[#242424] border-transparent'}`}
             >
               <Download className="w-3.5 h-3.5" />
-              Export
+              <span>Export</span>
             </button>
 
             <AnimatePresence>
@@ -202,99 +200,66 @@ const EditorHeader = ({ onToggleLeft, onToggleRight, isLeftOpen, isRightOpen, ed
                   initial={{ opacity: 0, y: 5, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                  className="absolute top-full right-0 mt-2 w-56 bg-[#16171d] border border-white/10 rounded-xl shadow-2xl p-1.5 z-[200] backdrop-blur-2xl"
+                  className="absolute top-full right-0 mt-3 w-60 bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl shadow-2xl p-2 z-[200]"
                 >
-                  <button 
-                    onClick={() => {
-                      exportToDOCX(editor, syncedTitle);
-                      setShowExport(false);
-                    }}
-                    className="w-full flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors text-left group cursor-pointer"
-                  >
-                    <img src={WordIcon} alt="Word" className="w-5 h-5 object-contain" />
-                    <div className="flex flex-col">
-                      <span className="text-xs text-slate-200 font-bold group-hover:text-white">Microsoft Word</span>
-                      <span className="text-[10px] text-slate-500 font-medium">(.docx)</span>
-                    </div>
-                  </button>
-                  <button 
-                    onClick={() => {
-                      exportToPDF(editor, syncedTitle);
-                      setShowExport(false);
-                    }}
-                    className="w-full flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors text-left group cursor-pointer"
-                  >
-                    <img src={PDFIcon} alt="PDF" className="w-5 h-5 object-contain" />
-                    <div className="flex flex-col">
-                      <span className="text-xs text-slate-200 font-bold group-hover:text-white">PDF document</span>
-                      <span className="text-[10px] text-slate-500 font-medium">(.pdf)</span>
-                    </div>
-                  </button>
-                  <button 
-                    onClick={() => {
-                      exportToText(editor, syncedTitle);
-                      setShowExport(false);
-                    }}
-                    className="w-full flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors text-left group cursor-pointer"
-                  >
-                    <img src={TXTIcon} alt="TXT" className="w-5 h-5 object-contain" />
-                    <div className="flex flex-col">
-                      <span className="text-xs text-slate-200 font-bold group-hover:text-white">Plain text</span>
-                      <span className="text-[10px] text-slate-500 font-medium">(.txt)</span>
-                    </div>
-                  </button>
-                  <button 
-                    onClick={() => {
-                      exportToMarkdown(editor, syncedTitle);
-                      setShowExport(false);
-                    }}
-                    className="w-full flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors text-left group cursor-pointer"
-                  >
-                    <img src={MDIcon} alt="MD" className="w-5 h-5 object-contain" />
-                    <div className="flex flex-col">
-                      <span className="text-xs text-slate-200 font-bold group-hover:text-white">Markdown</span>
-                      <span className="text-[10px] text-slate-500 font-medium">(.md)</span>
-                    </div>
-                  </button>
+                  {[
+                    { icon: WordIcon, name: 'Microsoft Word', ext: '.docx', action: exportToDOCX },
+                    { icon: PDFIcon, name: 'PDF Document', ext: '.pdf', action: exportToPDF },
+                    { icon: TXTIcon, name: 'Plain Text', ext: '.txt', action: exportToText },
+                    { icon: MDIcon, name: 'Markdown', ext: '.md', action: exportToMarkdown },
+                  ].map((item) => (
+                    <button 
+                      key={item.name}
+                      onClick={() => {
+                        item.action(editor, syncedTitle);
+                        setShowExport(false);
+                      }}
+                      className="w-full flex items-center gap-3.5 p-2.5 hover:bg-[#242424] rounded-lg transition-all text-left group cursor-pointer"
+                    >
+                      <img src={item.icon} alt="" className="w-5 h-5 object-contain transition-all" />
+                      <div className="flex flex-col">
+                        <span className="text-xs text-[#fafafa] font-medium group-hover:text-[#3ecf8e] tracking-tight transition-colors">{item.name}</span>
+                        <span className="text-[10px] text-[#4d4d4d] font-bold uppercase tracking-wider">{item.ext}</span>
+                      </div>
+                    </button>
+                  ))}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
           <button 
-            onClick={() => {
-              setShowShare(true);
-              // Auto-switch tab if they clicked Publish specifically (optional)
-            }}
-            className="hidden lg:flex items-center gap-2 px-3 py-1.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg text-xs font-bold transition-all cursor-pointer"
+            onClick={() => setShowShare(true)}
+            className="hidden lg:flex items-center gap-2 px-4 py-2 text-[#898989] hover:text-[#fafafa] hover:bg-[#242424] rounded-lg text-xs font-medium transition-all cursor-pointer"
           >
             <Share2 className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Share</span>
+            <span className="tracking-tight">Share</span>
           </button>
+          
           <button 
             onClick={() => setShowShare(true)}
-            className={`hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+            className={`hidden lg:flex items-center gap-2.5 px-5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer border ${
               activeDocument?.visibility === 'public' 
-                ? 'bg-[#1D9E75] text-white shadow-lg shadow-[#1D9E75]/20' 
-                : 'bg-[#1D9E75]/10 text-[#1D9E75] hover:bg-[#1D9E75] hover:text-white shadow-lg shadow-[#1D9E75]/5'
+                ? 'bg-[#3ecf8e] text-[#171717] border-[#3ecf8e] shadow-lg shadow-[#3ecf8e]/10 hover:scale-[1.02] active:scale-[0.98]' 
+                : 'bg-[#3ecf8e]/10 text-[#3ecf8e] hover:bg-[#3ecf8e] hover:text-[#171717] border-[#3ecf8e]/20 shadow-inner'
             }`}
           >
             {activeDocument?.visibility === 'public' ? (
               <>
                 <Check className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Published</span>
+                <span className="tracking-tight">Published</span>
               </>
             ) : (
               <>
                 <Globe className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Publish</span>
+                <span className="tracking-tight">Publish</span>
               </>
             )}
           </button>
 
           <button
             onClick={onToggleRight}
-            className={`p-1.5 rounded-md transition-colors cursor-pointer ${isRightOpen ? 'text-[#1D9E75] bg-[#1D9E75]/10' : 'text-slate-400 hover:bg-white/5'}`}
+            className={`p-2 rounded-lg transition-all cursor-pointer ${isRightOpen ? 'text-[#3ecf8e] bg-[#3ecf8e]/10 border border-[#3ecf8e]/20' : 'text-[#898989] hover:bg-[#242424] hover:text-[#fafafa] border border-transparent'}`}
           >
             <PanelRight className="w-4 h-4" />
           </button>

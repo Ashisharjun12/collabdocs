@@ -8,7 +8,7 @@ const DashboardLayout = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
-    <div className="h-screen bg-[#0f1117] text-slate-200 font-sans flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#171717] text-slate-200 font-sans flex flex-col overflow-hidden">
 
       <Navbar onMenuClick={() => setIsMobileOpen(true)} />
       
@@ -21,7 +21,7 @@ const DashboardLayout = () => {
 
         {/* Mobile Sidebar Drawer */}
         <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
-          <SheetContent side="left" className="p-0 w-64 bg-[#0d0f18] border-r border-[#1e2130]">
+          <SheetContent side="left" className="p-0 w-64 bg-[#1c1c1c] border-r border-[#242424]">
             <Sidebar onClose={() => setIsMobileOpen(false)} />
           </SheetContent>
         </Sheet>

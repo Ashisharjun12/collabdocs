@@ -22,19 +22,17 @@ const NameVersionAction = () => {
     try {
       setIsSaving(true);
       const nameToSave = versionName;
+      const toastId = toast.loading("Capturing snapshot...");
       
-      const toastId = toast.loading("Saving version snapshot...");
       await docApi.saveVersion(docId, nameToSave);
       
-      // Delay so background worker finishes
       setTimeout(() => {
         toast.success(`Version "${nameToSave}" saved!`, { id: toastId });
         setIsSaving(false);
         setIsOpen(false);
         setVersionName("");
-      }, 1500);
+      }, 1200);
     } catch (error) {
-      console.error("Failed to save version:", error);
       toast.error("Failed to save version snapshot");
       setIsSaving(false);
     }
@@ -45,34 +43,51 @@ const NameVersionAction = () => {
       <SidebarItem
         icon={<BookmarkPlus className="w-4 h-4" />}
         label="Name current version"
-        isSubItem={true}
+        isSubItem={false}
         onClick={() => setIsOpen(true)}
       />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="bg-[#ffffff] dark:bg-[#16171d] border-slate-200 dark:border-white/10 text-slate-800 dark:text-white shadow-2xl sm:max-w-[360px] rounded-[16px] p-5 focus:outline-none">
-          <DialogHeader className="mb-4">
-            <DialogTitle className="text-[15px] font-bold">Name current version</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="bg-[#171717] border border-[#2e2e2e] text-[#fafafa] shadow-2xl sm:max-w-[400px] rounded-2xl p-0 overflow-hidden border-none focus:outline-none">
+          <div className="p-8 pb-4">
+            <DialogHeader className="mb-6">
+              <div className="w-10 h-10 rounded-xl bg-[#3ecf8e]/10 flex items-center justify-center border border-[#3ecf8e]/20 mb-4">
+                <BookmarkPlus className="w-5 h-5 text-[#3ecf8e]" />
+              </div>
+              <DialogTitle className="text-lg font-bold tracking-tight">Name this version</DialogTitle>
+              <p className="text-xs text-[#4d4d4d] font-medium leading-relaxed mt-1">
+                Give this milestone a name to easily find it in the activity timeline later.
+              </p>
+            </DialogHeader>
 
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={versionName}
-              onChange={(e) => setVersionName(e.target.value)}
-              placeholder="e.g. Final Draft"
-              autoFocus
-              className="flex-1 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-[13px] text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#1D9E75] transition-all"
-              onKeyDown={(e) => { 
-                if (e.key === 'Enter') handleSaveVersion(); 
-              }}
-            />
+            <div className="space-y-4">
+              <input
+                type="text"
+                value={versionName}
+                onChange={(e) => setVersionName(e.target.value)}
+                placeholder="e.g. Final Submission, Draft v2"
+                autoFocus
+                className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl px-4 py-3 text-sm text-[#fafafa] placeholder:text-[#4d4d4d] focus:outline-none focus:border-[#3ecf8e]/40 transition-all font-medium"
+                onKeyDown={(e) => { 
+                  if (e.key === 'Enter') handleSaveVersion(); 
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="bg-[#1c1c1c] p-6 flex justify-end gap-3 border-t border-[#2e2e2e] mt-4">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="px-5 py-2 text-xs font-bold text-[#4d4d4d] hover:text-[#fafafa] transition-all uppercase tracking-widest cursor-pointer"
+            >
+              Cancel
+            </button>
             <button
               onClick={handleSaveVersion}
               disabled={isSaving || !versionName.trim()}
-              className="bg-[#1D9E75] text-white px-4 py-2 rounded-xl text-[12px] font-bold shadow-md shadow-[#1D9E75]/20 hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center min-w-[70px]"
+              className="bg-[#3ecf8e] text-[#171717] px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-[#3ecf8e]/10 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center min-w-[100px] cursor-pointer"
             >
-              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save Snapshot"}
             </button>
           </div>
         </DialogContent>

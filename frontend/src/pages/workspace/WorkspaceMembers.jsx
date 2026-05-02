@@ -63,11 +63,11 @@ const WorkspaceMembers = () => {
 
   const getRoleBadgeColor = (role) => {
     switch (role?.toLowerCase()) {
-      case 'owner': return 'bg-amber-400/10 text-amber-400 border-amber-400/20';
-      case 'admin': return 'bg-[#1D9E75]/10 text-[#1D9E75] border-[#1D9E75]/20';
-      case 'editor': return 'bg-blue-400/10 text-blue-400 border-blue-400/20';
-      case 'viewer': return 'bg-slate-400/10 text-slate-400 border-slate-400/20';
-      default: return 'bg-slate-800/10 text-slate-500 border-slate-800/20';
+      case 'owner': return 'bg-amber-500/10 text-amber-500 border-amber-500/20';
+      case 'admin': return 'bg-[#3ecf8e]/10 text-[#3ecf8e] border-[#3ecf8e]/20';
+      case 'editor': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
+      case 'viewer': return 'bg-[#898989]/10 text-[#898989] border-[#898989]/20';
+      default: return 'bg-[#2e2e2e]/10 text-[#4d4d4d] border-[#2e2e2e]/20';
     }
   };
 
@@ -86,8 +86,8 @@ const WorkspaceMembers = () => {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-10rem)]">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-10 h-10 text-[#1D9E75] animate-spin" />
-          <p className="text-slate-500 text-sm font-medium animate-pulse">Loading members...</p>
+          <Loader2 className="w-10 h-10 text-[#3ecf8e] animate-spin" />
+          <p className="text-[#898989] text-sm font-medium animate-pulse">Loading members...</p>
         </div>
       </div>
     );
@@ -99,17 +99,17 @@ const WorkspaceMembers = () => {
   const members = activeWorkspace.members || [];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-10 selection:bg-[#3ecf8e]/30 selection:text-[#fafafa]">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#1D9E75]/10 flex items-center justify-center border border-[#1D9E75]/20">
-              <Users className="w-5 h-5 text-[#1D9E75]" />
+          <h1 className="text-2xl font-medium text-[#fafafa] tracking-tight flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-[#3ecf8e]/10 flex items-center justify-center border border-[#3ecf8e]/20">
+              <Users className="w-6 h-6 text-[#3ecf8e]" />
             </div>
             Workspace Members
           </h1>
-          <p className="text-slate-500 text-sm mt-2 font-medium">
+          <p className="text-[#898989] text-[14px] mt-3 font-normal">
             Manage your team and their access levels for {activeWorkspace.name}
           </p>
         </div>
@@ -117,7 +117,7 @@ const WorkspaceMembers = () => {
         <div className="flex items-center gap-3">
            <Button 
              variant="outline" 
-             className="bg-[#13151f] border-[#1e2130] text-slate-300 hover:text-white rounded-xl h-11 px-5 cursor-pointer"
+             className="bg-[#1c1c1c] border-[#2e2e2e] text-[#898989] hover:text-[#fafafa] rounded-lg h-11 px-5 cursor-pointer"
              onClick={handleRefresh}
              disabled={isRefreshing}
            >
@@ -129,41 +129,41 @@ const WorkspaceMembers = () => {
       </div>
 
       {/* Members Table */}
-      <div className="bg-[#13151f]/30 border border-[#1e2130] rounded-[32px] overflow-hidden backdrop-blur-sm">
+      <div className="bg-[#1c1c1c] border border-[#242424] rounded-xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-[#1e2130] bg-[#0d0f18]/50">
-                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">Member</th>
-                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">Role</th>
-                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">Email</th>
+              <tr className="border-b border-[#2e2e2e] bg-[#171717]">
+                <th className="px-6 py-5 text-[11px] font-medium uppercase tracking-[1.2px] text-[#4d4d4d]">Member</th>
+                <th className="px-6 py-5 text-[11px] font-medium uppercase tracking-[1.2px] text-[#4d4d4d]">Role</th>
+                <th className="px-6 py-5 text-[11px] font-medium uppercase tracking-[1.2px] text-[#4d4d4d]">Email</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1e2130]/50">
+            <tbody className="divide-y divide-[#2e2e2e]/30">
               {members.map((member) => (
-                <tr key={member.id} className="hover:bg-[#13151f]/50 transition-colors group">
+                <tr key={member.id} className="hover:bg-[#242424] transition-colors group">
                   <td className="px-6 py-5">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-2xl overflow-hidden border border-[#1e2130] shadow-md group-hover:border-[#1D9E75]/30 transition-colors bg-[#0d0f18] flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#2e2e2e] shadow-sm group-hover:border-[#3ecf8e]/30 transition-colors bg-[#171717] flex items-center justify-center">
                         <Avvvatars value={member.user?.email || member.user?.name || 'user'} size={40} style="shape" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-[14px] font-bold text-white group-hover:text-[#1D9E75] transition-colors truncate tracking-tight">
+                        <p className="text-[14px] font-medium text-[#fafafa] group-hover:text-[#3ecf8e] transition-colors truncate tracking-tight">
                           {member.user?.name || 'Unnamed User'}
-                          {authUser?.id === member.user?.id && <span className="ml-2 text-[10px] bg-[#1D9E75]/10 text-[#1D9E75] px-2 py-0.5 rounded-full uppercase tracking-widest border border-[#1D9E75]/10 font-black">You</span>}
+                          {authUser?.id === member.user?.id && <span className="ml-2 text-[10px] bg-[#3ecf8e]/10 text-[#3ecf8e] px-2 py-0.5 rounded-lg uppercase tracking-[1.2px] border border-[#3ecf8e]/10 font-medium">You</span>}
                         </p>
-                        <p className="text-[11px] text-slate-500 font-bold mt-0.5">Joined recently</p>
+                        <p className="text-[11px] text-[#4d4d4d] font-normal mt-0.5">Joined recently</p>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${getRoleBadgeColor(member.role)}`}>
+                    <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-[1.2px] border ${getRoleBadgeColor(member.role)}`}>
                       {getRoleIcon(member.role)}
                       {member.role}
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <div className="flex items-center gap-2 text-slate-400 group-hover:text-slate-300 transition-colors font-medium text-[13px]">
+                    <div className="flex items-center gap-2 text-[#898989] group-hover:text-[#fafafa] transition-colors font-normal text-[13px]">
                       <Mail className="w-3.5 h-3.5 opacity-50" />
                       {member.user?.email}
                     </div>
@@ -176,21 +176,21 @@ const WorkspaceMembers = () => {
 
 
         {members.length === 0 && (
-          <div className="py-20 flex flex-col items-center justify-center text-center px-4">
-             <div className="w-20 h-20 bg-[#1a1d28] rounded-full flex items-center justify-center mb-6 border border-[#1e2130] shadow-inner">
-               <Users className="w-10 h-10 text-slate-700" />
+          <div className="py-24 flex flex-col items-center justify-center text-center px-4">
+             <div className="w-20 h-20 bg-[#171717] rounded-full flex items-center justify-center mb-6 border border-[#2e2e2e]">
+               <Users className="w-10 h-10 text-[#2e2e2e]" />
              </div>
-             <h3 className="text-white text-lg font-bold mb-2">No members found</h3>
-             <p className="text-slate-500 text-sm max-w-sm font-medium leading-relaxed">
+             <h3 className="text-[#fafafa] text-lg font-medium mb-3">No members found</h3>
+             <p className="text-[#898989] text-[14px] max-w-sm font-normal leading-relaxed">
                Something went wrong. Try refreshing the page to see the member list.
              </p>
           </div>
         )}
       </div>
 
-      <div className="mt-8 flex items-center justify-between text-[11px] text-slate-600 font-bold uppercase tracking-widest px-4">
+      <div className="mt-8 flex items-center justify-between text-[11px] text-[#4d4d4d] font-medium uppercase tracking-[1.2px] px-4">
         <p>Total {members.length} members</p>
-        <p>Workspace Visibility: <span className="text-slate-400">{activeWorkspace.visibility}</span></p>
+        <p>Workspace Visibility: <span className="text-[#898989]">{activeWorkspace.visibility}</span></p>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { BlockNoteView } from "@blocknote/shadcn";
 import { useCreateBlockNote } from "@blocknote/react";
 import { createExtension, getDefaultSlashMenuItems } from "@blocknote/core";
@@ -11,7 +11,7 @@ import { usePageBreaker } from "../hooks/usePageBreaker";
 import { useLayoutStore } from "../../../store/layout-store";
 import { useDocStore } from "../../../store/doc-store";
 
-const CURSOR_COLORS = ["#FF00FF","#00FFFF","#FF8800","#8A2BE2","#00FF00","#FF4500","#1D9E75","#3b82f6","#ef4444","#f59e0b"];
+const CURSOR_COLORS = ["#3ecf8e", "#3b82f6", "#ef4444", "#f59e0b", "#8b5cf6", "#ec4899", "#10b981", "#f97316"];
 
 // Page sizes: width × height in cm
 const PAGE_SIZES = { A4: [21, 29.7], Letter: [21.59, 27.94], Legal: [21.59, 35.56], A3: [29.7, 42] };
@@ -132,14 +132,21 @@ const CollaborativeEditor = ({ doc, provider, user, onEditorReady, docId, readOn
   });
 
   // ── Editor ready + import blocks from sessionStorage ──────────────────────
+  const onReadyCalled = useRef(false);
   useEffect(() => {
-    if (!editor) return;
-    // Defer the callback to avoid "Cannot update a component while rendering" warning
+    if (!editor || onReadyCalled.current) return;
+    
     const timer = setTimeout(() => {
       if (onEditorReady) onEditorReady(editor);
-    }, 0);
+      onReadyCalled.current = true;
+    }, 100);
     
-    if (!docId) return () => clearTimeout(timer);
+    return () => clearTimeout(timer);
+  }, [editor, onEditorReady]);
+
+  // Handle import blocks separately
+  useEffect(() => {
+    if (!editor || !docId) return;
     
     const raw = sessionStorage.getItem(`import-blocks-${docId}`);
     if (raw) {
@@ -150,9 +157,7 @@ const CollaborativeEditor = ({ doc, provider, user, onEditorReady, docId, readOn
         console.error('[CollaborativeEditor] Failed to load imported blocks:', e);
       }
     }
-    
-    return () => clearTimeout(timer);
-  }, [editor, onEditorReady, docId]);
+  }, [editor, docId]);
 
 
 
@@ -215,8 +220,8 @@ const CollaborativeEditor = ({ doc, provider, user, onEditorReady, docId, readOn
   };
 
   return (
-    <div className={`relative flex h-full w-full flex-col overflow-hidden bg-[#0a0b10] ${isZenMode ? 'zen-mode' : ''}`}>
-      <div className="flex-1 overflow-y-auto bg-[#0a0b10] custom-scrollbar">
+    <div className={`relative flex h-full w-full flex-col overflow-hidden bg-[#171717] ${isZenMode ? 'zen-mode' : ''}`}>
+      <div className="flex-1 overflow-y-auto bg-[#171717] custom-scrollbar">
         <div style={editorWrapStyle}>
           <BlockNoteView
             editor={editor}

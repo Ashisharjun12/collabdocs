@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Columns, Loader2, ChevronDown, Palette } from 'lucide-react';
+import { Columns, Loader2, ChevronDown, Palette, Maximize } from 'lucide-react';
 import { useHocuspocusProvider } from '@hocuspocus/provider-react';
 import {
   Dialog,
@@ -22,7 +22,7 @@ const PAGE_SIZES = [
 const PRESET_COLORS = [
   '#ffffff', '#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1',
   '#fff7ed', '#fefce8', '#f0fdf4', '#eff6ff', '#faf5ff',
-  '#fff1f2', '#000000'
+  '#fff1f2', '#171717'
 ];
 
 const PageSetupAction = () => {
@@ -78,51 +78,51 @@ const PageSetupAction = () => {
       />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="bg-[#ffffff] dark:bg-[#16171d] border-slate-200 dark:border-white/10 text-slate-800 dark:text-white shadow-2xl sm:max-w-[440px] rounded-[16px] p-0 overflow-hidden border-none focus:outline-none">
+        <DialogContent className="bg-[#171717] border border-[#2e2e2e] text-[#fafafa] shadow-2xl sm:max-w-[480px] rounded-2xl p-0 overflow-hidden border-none focus:outline-none">
           <div className="sr-only">
             <DialogHeader><DialogTitle>Page Setup</DialogTitle></DialogHeader>
           </div>
 
           <Tabs defaultValue={settings.mode} onValueChange={(v) => updateYjs({ mode: v })} className="w-full flex flex-col">
-            <div className="border-b border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-white/[0.02]">
-              <div className="px-5 py-3 flex items-center gap-3 border-b border-slate-200 dark:border-white/5">
-                <div className="w-5 h-5 bg-[#1D9E75] rounded flex items-center justify-center shadow-md shadow-[#1D9E75]/20">
-                  <Columns className="w-3 h-3 text-white" />
+            <div className="border-b border-[#2e2e2e] bg-[#1c1c1c]/50">
+              <div className="px-6 py-4 flex items-center gap-3 border-b border-[#2e2e2e]">
+                <div className="w-8 h-8 bg-[#3ecf8e]/10 rounded-lg flex items-center justify-center border border-[#3ecf8e]/20">
+                  <Columns className="w-4 h-4 text-[#3ecf8e]" />
                 </div>
-                <span className="text-[14px] font-medium text-slate-800 dark:text-slate-200">Page Setup</span>
+                <span className="text-sm font-bold tracking-tight">Page Setup</span>
               </div>
 
-              <TabsList className="bg-transparent h-10 p-0 flex px-5 gap-5">
+              <TabsList className="bg-transparent h-12 p-0 flex px-6 gap-8">
                 <TabsTrigger
                   value="pages"
-                  className="bg-transparent border-b-2 border-transparent data-[state=active]:border-[#1D9E75] data-[state=active]:text-[#1D9E75] text-slate-500 dark:text-slate-400 rounded-none px-0 h-full transition-all cursor-pointer shadow-none data-[state=active]:shadow-none hover:text-slate-800 dark:hover:text-slate-200"
+                  className="bg-transparent border-b-2 border-transparent data-[state=active]:border-[#3ecf8e] data-[state=active]:text-[#3ecf8e] text-[#4d4d4d] rounded-none px-0 h-full transition-all cursor-pointer shadow-none data-[state=active]:shadow-none hover:text-[#fafafa]"
                 >
-                  <span className="text-[12px] font-bold">Pages</span>
+                  <span className="text-[12px] font-bold uppercase tracking-widest">Pages</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="pageless"
-                  className="bg-transparent border-b-2 border-transparent data-[state=active]:border-[#1D9E75] data-[state=active]:text-[#1D9E75] text-slate-500 dark:text-slate-400 rounded-none px-0 h-full transition-all cursor-pointer shadow-none data-[state=active]:shadow-none hover:text-slate-800 dark:hover:text-slate-200"
+                  className="bg-transparent border-b-2 border-transparent data-[state=active]:border-[#3ecf8e] data-[state=active]:text-[#3ecf8e] text-[#4d4d4d] rounded-none px-0 h-full transition-all cursor-pointer shadow-none data-[state=active]:shadow-none hover:text-[#fafafa]"
                 >
-                  <span className="text-[12px] font-bold">Pageless</span>
+                  <span className="text-[12px] font-bold uppercase tracking-widest">Pageless</span>
                 </TabsTrigger>
               </TabsList>
             </div>
 
-            <div className="p-6 space-y-8 overflow-y-auto max-h-[60vh] custom-scrollbar">
-              <TabsContent value="pages" className="space-y-6 mt-0 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="p-8 space-y-10 overflow-y-auto max-h-[60vh] custom-scrollbar">
+              <TabsContent value="pages" className="space-y-10 mt-0 animate-in fade-in slide-in-from-bottom-2 duration-300">
 
                 {/* Orientation & Size */}
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Orientation</label>
-                    <div className="flex bg-slate-100 dark:bg-white/5 p-1 rounded-xl border border-slate-200 dark:border-white/5">
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-bold text-[#4d4d4d] uppercase tracking-[2px] block">Orientation</label>
+                    <div className="flex bg-[#1c1c1c] p-1 rounded-xl border border-[#2e2e2e]">
                       {['portrait', 'landscape'].map(o => (
                         <button
                           key={o}
                           onClick={() => updateYjs({ orientation: o })}
-                          className={`flex-1 py-1.5 px-3 rounded-lg text-[11px] font-bold capitalize transition-all cursor-pointer ${settings.orientation === o
-                              ? 'bg-[#1D9E75] text-white shadow-md shadow-[#1D9E75]/20'
-                              : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                          className={`flex-1 py-2 px-3 rounded-lg text-[11px] font-bold capitalize transition-all cursor-pointer ${settings.orientation === o
+                              ? 'bg-[#3ecf8e] text-[#171717] shadow-lg shadow-[#3ecf8e]/10'
+                              : 'text-[#4d4d4d] hover:text-[#fafafa]'
                             }`}
                         >
                           {o}
@@ -130,51 +130,51 @@ const PageSetupAction = () => {
                       ))}
                     </div>
                   </div>
-                  <div>
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Paper Size</label>
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-bold text-[#4d4d4d] uppercase tracking-[2px] block">Paper Size</label>
                     <div className="relative group">
                       <select
                         value={settings.pageSize}
                         onChange={(e) => updateYjs({ pageSize: e.target.value })}
-                        className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl py-2 px-4 text-[12px] font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:border-[#1D9E75] transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl py-2.5 px-4 text-[12px] font-bold text-[#fafafa] focus:outline-none focus:border-[#3ecf8e]/40 transition-all appearance-none cursor-pointer"
                       >
-                        {PAGE_SIZES.map(s => <option key={s.name} value={s.name} className="bg-white dark:bg-[#16171d] text-slate-800 dark:text-slate-200">{s.name}</option>)}
+                        {PAGE_SIZES.map(s => <option key={s.name} value={s.name} className="bg-[#1c1c1c] text-[#fafafa]">{s.name}</option>)}
                       </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none group-hover:text-[#1D9E75] transition-colors" />
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4d4d4d] pointer-events-none group-hover:text-[#3ecf8e] transition-colors" />
                     </div>
                   </div>
                 </div>
 
                 {/* Page Count */}
-                <div>
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Number of Pages</label>
-                  <div className="flex items-center gap-3">
+                <div className="space-y-4">
+                  <label className="text-[10px] font-bold text-[#4d4d4d] uppercase tracking-[2px] block">Initial Pages</label>
+                  <div className="flex items-center gap-4">
                     <input 
                       type="number"
                       min="1"
                       max="100"
                       value={settings.pageCount || 1}
                       onChange={(e) => updateYjs({ pageCount: parseInt(e.target.value) || 1 })}
-                      className="w-24 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl py-2 px-4 text-[12px] font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:border-[#1D9E75] transition-all"
+                      className="w-24 bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl py-2.5 px-4 text-[12px] font-bold text-[#fafafa] focus:outline-none focus:border-[#3ecf8e]/40 transition-all"
                     />
-                    <span className="text-[11px] text-slate-500">Initial sheets in document</span>
+                    <span className="text-[11px] text-[#4d4d4d] font-medium">Sheets generated at birth</span>
                   </div>
                 </div>
 
-                {/* Margins in CM */}
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">Margins (cm)</label>
+                {/* Margins */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-[#4d4d4d] uppercase tracking-[2px] block">Margins (cm)</label>
                     <button
                       onClick={() => updateYjs({ margins: { top: '2.54', bottom: '2.54', left: '2.54', right: '2.54' } })}
-                      className="text-[10px] font-bold text-[#1D9E75] hover:underline cursor-pointer uppercase tracking-widest"
+                      className="text-[10px] font-bold text-[#3ecf8e] hover:opacity-80 cursor-pointer uppercase tracking-widest"
                     >
-                      Reset
+                      Reset Default
                     </button>
                   </div>
                   <div className="grid grid-cols-4 gap-3">
                     {['Top', 'Bottom', 'Left', 'Right'].map(m => (
-                      <div key={m} className="relative group">
+                      <div key={m} className="relative pt-4">
                         <input
                           type="number"
                           step="0.1"
@@ -183,9 +183,9 @@ const PageSetupAction = () => {
                             const newMargins = { ...settings.margins, [m.toLowerCase()]: e.target.value };
                             updateYjs({ margins: newMargins });
                           }}
-                          className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl py-2.5 px-2 text-[12px] font-bold text-slate-700 dark:text-slate-200 focus:outline-none focus:border-[#1D9E75]/50 transition-all text-center"
+                          className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl py-3 px-2 text-[12px] font-bold text-[#fafafa] focus:outline-none focus:border-[#3ecf8e]/40 transition-all text-center"
                         />
-                        <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-1 bg-white dark:bg-[#16171d] text-[9px] font-bold text-slate-400 uppercase tracking-widest">{m}</span>
+                        <span className="absolute top-0 left-1/2 -translate-x-1/2 text-[8px] font-bold text-[#4d4d4d] uppercase tracking-widest">{m}</span>
                       </div>
                     ))}
                   </div>
@@ -193,52 +193,56 @@ const PageSetupAction = () => {
               </TabsContent>
 
               <TabsContent value="pageless" className="mt-0 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <div className="p-4 bg-emerald-50 dark:bg-emerald-500/5 border border-emerald-200 dark:border-emerald-500/10 rounded-xl flex gap-3 items-start">
-                  <p className="text-[12px] text-emerald-800 dark:text-emerald-200 leading-relaxed font-medium">
-                    Pageless mode removes page breaks and adapts to your screen size. Perfect for wide tables and collaborative drafts.
+                <div className="p-6 bg-[#3ecf8e]/5 border border-[#3ecf8e]/10 rounded-2xl flex flex-col gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#3ecf8e]/10 flex items-center justify-center border border-[#3ecf8e]/20">
+                     <Maximize className="w-5 h-5 text-[#3ecf8e]" />
+                  </div>
+                  <p className="text-[13px] text-[#fafafa] leading-relaxed font-medium tracking-tight">
+                    Pageless mode removes physical breaks and adapts content to your viewport width. 
+                    <span className="block mt-2 text-[#898989] text-xs">Ideal for large images, tables, and ultra-wide displays.</span>
                   </p>
                 </div>
               </TabsContent>
 
-              {/* Background Selection */}
-              <div className="pt-6 border-t border-slate-200 dark:border-white/5">
-                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Background Color</label>
+              {/* Background Color */}
+              <div className="pt-10 border-t border-[#2e2e2e] space-y-4">
+                <label className="text-[10px] font-bold text-[#4d4d4d] uppercase tracking-[2px] block">Surface Appearance</label>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <button className="w-full flex items-center justify-between bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl p-2.5 hover:bg-slate-50 dark:hover:bg-white/10 transition-all cursor-pointer">
+                    <button className="w-full flex items-center justify-between bg-[#1c1c1c] border border-[#2e2e2e] rounded-xl p-3 hover:bg-[#242424] transition-all cursor-pointer group">
                       <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 rounded-md shadow-sm border border-slate-200 dark:border-white/10" style={{ backgroundColor: settings.backgroundColor }} />
-                        <span className="text-[12px] font-bold text-slate-700 dark:text-slate-300">Page Color</span>
+                        <div className="w-6 h-6 rounded-md shadow-inner border border-[#2e2e2e]" style={{ backgroundColor: settings.backgroundColor }} />
+                        <span className="text-[12px] font-bold text-[#fafafa] tracking-tight">Canvas Color</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] font-mono text-slate-500 uppercase">{settings.backgroundColor}</span>
-                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                        <span className="text-[10px] font-mono text-[#4d4d4d] uppercase font-bold">{settings.backgroundColor}</span>
+                        <ChevronDown className="w-4 h-4 text-[#4d4d4d] group-hover:text-[#fafafa]" />
                       </div>
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent className="bg-white dark:bg-[#1c1d25] border border-slate-200 dark:border-white/10 p-4 rounded-xl w-64 shadow-xl">
-                    <div className="space-y-4">
-                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Presets</p>
-                      <div className="grid grid-cols-6 gap-2">
+                  <PopoverContent className="bg-[#1c1c1c] border border-[#2e2e2e] p-5 rounded-2xl w-64 shadow-2xl z-[250]">
+                    <div className="space-y-5">
+                      <p className="text-[9px] font-bold text-[#4d4d4d] uppercase tracking-[2px]">Core Presets</p>
+                      <div className="grid grid-cols-6 gap-3">
                         {PRESET_COLORS.map(c => (
                           <button
                             key={c}
                             onClick={() => updateYjs({ backgroundColor: c })}
-                            className={`w-7 h-7 rounded-full border transition-all cursor-pointer ${settings.backgroundColor === c ? 'border-[#1D9E75] ring-2 ring-[#1D9E75]/30' : 'border-slate-200 dark:border-white/10 hover:scale-110 shadow-sm'
+                            className={`w-7 h-7 rounded-lg border transition-all cursor-pointer ${settings.backgroundColor === c ? 'border-[#3ecf8e] ring-2 ring-[#3ecf8e]/20 scale-110' : 'border-[#2e2e2e] hover:scale-110 shadow-sm'
                               }`}
                             style={{ backgroundColor: c }}
                           />
                         ))}
                       </div>
-                      <div className="h-px bg-slate-200 dark:bg-white/5" />
-                      <div className="space-y-2">
-                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Custom</p>
+                      <div className="h-px bg-[#2e2e2e]" />
+                      <div className="space-y-3">
+                        <p className="text-[9px] font-bold text-[#4d4d4d] uppercase tracking-[2px]">Custom Tone</p>
                         <div className="flex gap-2">
-                          <button onClick={() => colorInputRef.current?.click()} className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 transition-all cursor-pointer">
-                            <Palette className="w-4 h-4 text-[#1D9E75]" />
+                          <button onClick={() => colorInputRef.current?.click()} className="w-10 h-10 rounded-xl bg-[#242424] border border-[#2e2e2e] flex items-center justify-center hover:bg-[#2e2e2e] transition-all cursor-pointer">
+                            <Palette className="w-4 h-4 text-[#3ecf8e]" />
                           </button>
                           <input ref={colorInputRef} type="color" value={settings.backgroundColor} onChange={(e) => updateYjs({ backgroundColor: e.target.value })} className="sr-only" />
-                          <input type="text" value={settings.backgroundColor} onChange={(e) => updateYjs({ backgroundColor: e.target.value })} className="flex-1 h-9 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-3 text-[12px] font-mono text-slate-700 dark:text-slate-300 focus:outline-none" placeholder="#ffffff" />
+                          <input type="text" value={settings.backgroundColor} onChange={(e) => updateYjs({ backgroundColor: e.target.value })} className="flex-1 h-10 bg-[#242424] border border-[#2e2e2e] rounded-xl px-3 text-[11px] font-mono text-[#fafafa] focus:outline-none focus:border-[#3ecf8e]/40" placeholder="#ffffff" />
                         </div>
                       </div>
                     </div>
@@ -247,10 +251,10 @@ const PageSetupAction = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between px-6 py-4 bg-slate-50 dark:bg-white/[0.01] border-t border-slate-200 dark:border-white/5">
-              <button className="text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all uppercase tracking-widest cursor-pointer">Default</button>
-              <button onClick={handleSave} disabled={isSaving} className="flex items-center justify-center min-w-[80px] px-5 py-2 bg-[#1D9E75] rounded-xl text-[12px] font-bold text-white shadow-lg shadow-[#1D9E75]/20 hover:opacity-90 transition-all disabled:opacity-50 cursor-pointer">
-                {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Done'}
+            <div className="flex items-center justify-between px-8 py-6 bg-[#1c1c1c]/50 border-t border-[#2e2e2e]">
+              <button className="text-[10px] font-bold text-[#4d4d4d] hover:text-[#fafafa] transition-all uppercase tracking-[2px] cursor-pointer">Set Default</button>
+              <button onClick={handleSave} disabled={isSaving} className="flex items-center justify-center min-w-[100px] h-10 px-6 bg-[#3ecf8e] rounded-xl text-xs font-bold text-[#171717] shadow-lg shadow-[#3ecf8e]/10 hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 cursor-pointer">
+                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apply Setup'}
               </button>
             </div>
           </Tabs>

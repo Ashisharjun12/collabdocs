@@ -125,7 +125,7 @@ export class R2StorageService {
     }
 
     // --- Direct Buffer Upload (For Server-Side Snapshots) ---
-    
+
     async uploadBuffer(key: string, buffer: Buffer, contentType: string = 'application/octet-stream') {
         const command = new PutObjectCommand({
             Bucket: this.bucket,
@@ -133,7 +133,7 @@ export class R2StorageService {
             Body: buffer,
             ContentType: contentType,
         });
-        
+
         return this.breaker.fire(command);
     }
 
@@ -143,12 +143,12 @@ export class R2StorageService {
             const command = new GetObjectCommand({ Bucket: this.bucket, Key: key });
             const response = (await this.breaker.fire(command)) as any;
             if (!response?.Body) return null;
-            
-           
+
+
             const byteArray = await response.Body.transformToByteArray();
             return Buffer.from(byteArray);
         } catch (err: any) {
-           
+
             if (err?.name === 'NoSuchKey' || err?.$metadata?.httpStatusCode === 404) return null;
             throw err;
         }

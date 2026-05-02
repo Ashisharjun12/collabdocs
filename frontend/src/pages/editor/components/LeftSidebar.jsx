@@ -1,41 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { 
+  FilePlus, 
+  Languages, 
+  Maximize, 
+  History, 
+  Printer, 
+  Presentation,
+  BookmarkPlus
+} from 'lucide-react';
 import { toast } from 'sonner';
-import { useHocuspocusProvider } from '@hocuspocus/provider-react';
 import { useWorkspaceStore } from '../../../store/workspace-store';
 import {
-  Search,
-  Settings,
-  Image as ImageIcon,
-  Star,
-  Trash2,
-  Columns,
-  Languages,
-  History,
-  WifiOff,
-  Printer,
-  Info,
-  Archive,
-  FilePlus,
-  FileMinus,
-  Share2,
-  Globe,
-  Download,
-  ChevronDown
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  exportToMarkdown, 
-  exportToPDF, 
-  exportToDOCX, 
-  exportToText 
-} from './ExportLogic';
-
-// Custom Export Icons
-import WordIcon from '../../../assets/google-docs.png';
-import PDFIcon from '../../../assets/pdf.png';
-import TXTIcon from '../../../assets/txt.png';
-import MDIcon from '../../../assets/markdown.png';
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 // Modular Actions
 import RenameAction from './sidebar-actions/RenameAction';
@@ -43,120 +24,61 @@ import MediaLibraryAction from './sidebar-actions/MediaLibraryAction';
 import PageSetupAction from './sidebar-actions/PageSetupAction';
 import SidebarItem from './sidebar-actions/SidebarItem';
 import OfflineSupportAction from './sidebar-actions/OfflineSupportAction';
-import VersionHistoryGroup from './sidebar-actions/VersionHistoryGroup';
 import FavoriteAction from './sidebar-actions/FavoriteAction';
 import ArchiveAction from './sidebar-actions/ArchiveAction';
 import DeleteAction from './sidebar-actions/DeleteAction';
-import PresenceSettingsAction from './sidebar-actions/PresenceSettingsAction';
+import NameVersionAction from './sidebar-actions/NameVersionAction';
+import { useLayoutStore } from '../../../store/layout-store';
 
-
-
-const LeftSidebar = ({ isOpen, onEnterHistoryMode, onPrint, editor }) => {
-  const [showMobileExport, setShowMobileExport] = useState(false);
+const LeftSidebar = ({ isOpen, onEnterHistoryMode, onPrint, provider, editor }) => {
   const { slug } = useParams();
-  const provider = useHocuspocusProvider();
   const { workspaces } = useWorkspaceStore();
+  const { isZenMode, setZenMode, setLeftOpen, setRightOpen } = useLayoutStore();
+  const activeWorkspace = workspaces.find(w => w.slug === slug);
 
-  const currentWorkspace = workspaces.find(w => w.slug === slug);
+  const toggleFocusMode = () => {
+    const nextZen = !isZenMode;
+    setZenMode(nextZen);
+    if (nextZen) {
+      toast.success("Focus Mode enabled!", { 
+        description: "Sidebars hidden. Press Esc to exit.",
+        icon: <div className="w-2 h-2 rounded-full bg-amber-400" /> 
+      });
+      // Optionally hide sidebars automatically
+      setLeftOpen(false);
+      setRightOpen(false);
+    } else {
+      toast("Focus Mode disabled");
+      setLeftOpen(true);
+    }
+  };
 
   return (
-    <aside className="w-[260px] md:w-[280px] border-r border-white/5 bg-[#0a0b10] flex flex-col h-full overflow-hidden shrink-0 shadow-2xl">
-      <div className="p-4 flex flex-col h-full w-[260px]">
-        {/* Workspace Brand */}
-        <div className="flex items-center gap-2.5 px-2 py-2 mb-6">
-          <div className="w-7 h-7 bg-gradient-to-br from-[#1D9E75] to-emerald-600 rounded-lg shadow-lg shadow-emerald-500/20 flex items-center justify-center text-white font-bold text-xs shrink-0">
-            {currentWorkspace?.name?.charAt(0) || 'W'}
+    <aside className="w-[280px] border-r border-[#2e2e2e] bg-[#171717] flex flex-col h-full overflow-hidden shrink-0 shadow-2xl relative z-20">
+      {/* Header - Minimalist Workspace Brand */}
+      <div className="p-6 border-b border-[#2e2e2e]">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-[#3ecf8e] flex items-center justify-center text-[#171717] shadow-lg shadow-[#3ecf8e]/10">
+            <Presentation className="w-5 h-5" />
           </div>
-          <span className="text-xs font-bold text-slate-200 truncate">
-            {currentWorkspace?.name || 'My Workspace'}
-          </span>
-        </div>
-
-        {/* Search Bar */}
-        <div className="relative mb-6 group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500 group-hover:text-[#1D9E75] transition-colors" />
-          <input
-            type="text"
-            placeholder="Search commands..."
-            className="w-full bg-white/[0.03] border border-white/5 rounded-lg py-1.5 pl-9 pr-3 text-xs text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-[#1D9E75]/50 transition-all"
-          />
-        </div>
-
-        {/* Mobile-Only Actions */}
-        <div className="lg:hidden mb-6 space-y-2">
-          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2 mb-2">Document Actions</p>
-          <div className="grid grid-cols-2 gap-2 px-1">
-            <button className="flex items-center justify-center gap-2 py-2 px-3 bg-white/[0.03] hover:bg-white/[0.06] border border-white/5 rounded-xl text-[11px] font-bold text-slate-300 transition-all">
-              <Share2 className="w-3.5 h-3.5" />
-              Share
-            </button>
-            <button className="flex items-center justify-center gap-2 py-2 px-3 bg-[#1D9E75]/10 hover:bg-[#1D9E75] border border-[#1D9E75]/20 rounded-xl text-[11px] font-bold text-[#1D9E75] hover:text-white transition-all">
-              <Globe className="w-3.5 h-3.5" />
-              Publish
-            </button>
+          <div className="min-w-0">
+            <h2 className="text-[10px] font-bold text-[#4d4d4d] uppercase tracking-[2px] mb-0.5">Workspace</h2>
+            <p className="text-sm font-medium text-[#fafafa] truncate tracking-tight">{activeWorkspace?.name || 'Loading...'}</p>
           </div>
+        </div>
+      </div>
+
+      {/* Simple Menu Items */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+        
+        {/* Document Actions Section */}
+        <div className="space-y-1.5">
+          <h3 className="px-2 text-[10px] font-bold text-[#4d4d4d] uppercase tracking-[2px] mb-4">Document Menu</h3>
           
-          <div className="px-1">
-            <button 
-              onClick={() => setShowMobileExport(!showMobileExport)}
-              className="w-full flex items-center justify-between py-2 px-3 bg-white/[0.03] hover:bg-white/[0.06] border border-white/5 rounded-xl text-[11px] font-bold text-slate-300 transition-all"
-            >
-              <div className="flex items-center gap-2">
-                <Download className="w-3.5 h-3.5" />
-                Export Options
-              </div>
-              <ChevronDown className={`w-3 h-3 transition-transform ${showMobileExport ? 'rotate-180' : ''}`} />
-            </button>
-
-            <AnimatePresence>
-              {showMobileExport && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="overflow-hidden mt-1 bg-white/[0.02] rounded-xl border border-white/5"
-                >
-                  <div className="p-1.5 space-y-1">
-                    <button 
-                      onClick={() => exportToDOCX(editor, "Untitled")}
-                      className="w-full flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors text-left group"
-                    >
-                      <img src={WordIcon} alt="Word" className="w-4 h-4 object-contain" />
-                      <span className="text-[10px] text-slate-300 font-bold">Microsoft Word (.docx)</span>
-                    </button>
-                    <button 
-                      onClick={() => exportToPDF(editor, "Untitled")}
-                      className="w-full flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors text-left group"
-                    >
-                      <img src={PDFIcon} alt="PDF" className="w-4 h-4 object-contain" />
-                      <span className="text-[10px] text-slate-300 font-bold">PDF Document (.pdf)</span>
-                    </button>
-                    <button 
-                      onClick={() => exportToText(editor, "Untitled")}
-                      className="w-full flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors text-left group"
-                    >
-                      <img src={TXTIcon} alt="TXT" className="w-4 h-4 object-contain" />
-                      <span className="text-[10px] text-slate-300 font-bold">Plain Text (.txt)</span>
-                    </button>
-                    <button 
-                      onClick={() => exportToMarkdown(editor, "Untitled")}
-                      className="w-full flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors text-left group"
-                    >
-                      <img src={MDIcon} alt="MD" className="w-4 h-4 object-contain" />
-                      <span className="text-[10px] text-slate-300 font-bold">Markdown (.md)</span>
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Flat List Content */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar -mx-2 px-2 space-y-0.5">
           <RenameAction />
           <MediaLibraryAction />
           <PageSetupAction />
+          
           <SidebarItem
             icon={<FilePlus className="w-4 h-4" />}
             label="Add New Page"
@@ -169,24 +91,71 @@ const LeftSidebar = ({ isOpen, onEnterHistoryMode, onPrint, editor }) => {
               }
             }}
           />
+          
           <SidebarItem
             icon={<Languages className="w-4 h-4" />}
-            label="Languages"
+            label="Language"
             onClick={() => toast.info("Languages feature coming soon!", { icon: "🌍" })}
           />
-          <OfflineSupportAction />
-          <PresenceSettingsAction />
-          <VersionHistoryGroup onEnterHistoryMode={onEnterHistoryMode} />
+        </div>
 
-          <SidebarItem icon={<Printer className="w-4 h-4" />} label="Print" onClick={onPrint} />
+        {/* Separator */}
+        <div className="h-px bg-[#2e2e2e] mx-2" />
+
+        {/* Collaboration & View Section */}
+        <div className="space-y-1.5">
+          <OfflineSupportAction />
+          
+          <SidebarItem
+            icon={<Maximize className="w-4 h-4" />}
+            label="Focus Mode"
+            onClick={toggleFocusMode}
+            rightIcon={isZenMode && <div className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)] animate-pulse" />}
+          />
+          
+          <Accordion type="single" collapsible className="border-none w-full shadow-none space-y-1">
+            <AccordionItem value="versions" className="border-none">
+              <AccordionTrigger className="p-0 border-none hover:no-underline [&>svg]:hidden">
+                <SidebarItem 
+                  icon={<History className="w-4 h-4" />} 
+                  label="Versions" 
+                />
+              </AccordionTrigger>
+              <AccordionContent className="p-0 mt-1.5 space-y-1 ml-4 border-l border-[#2e2e2e]">
+                <SidebarItem 
+                  icon={<History className="w-4 h-4" />} 
+                  label="View History" 
+                  isSubItem={false}
+                  onClick={onEnterHistoryMode} 
+                />
+                <NameVersionAction />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+
+        {/* Separator */}
+        <div className="h-px bg-[#2e2e2e] mx-2" />
+
+        {/* Utility Section */}
+        <div className="space-y-1.5">
+          <SidebarItem 
+            icon={<Printer className="w-4 h-4" />} 
+            label="Print Document" 
+            onClick={onPrint} 
+          />
+          
           <FavoriteAction />
           <ArchiveAction />
-        </div>
-
-        {/* Bottom Section - Cleanup */}
-        <div className="pt-4 mt-auto border-t border-white/5">
           <DeleteAction />
         </div>
+      </div>
+
+      {/* Footer - Minimalist */}
+      <div className="p-6 border-t border-[#2e2e2e] bg-[#1c1c1c]/30">
+         <p className="text-[9px] font-bold text-[#4d4d4d] uppercase tracking-[2px] text-center">
+           Document Controls
+         </p>
       </div>
     </aside>
   );

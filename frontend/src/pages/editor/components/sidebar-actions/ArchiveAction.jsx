@@ -27,13 +27,10 @@ const ArchiveAction = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // Permission Logic: Owners and Admins can archive. Editors cannot.
   const member = activeWorkspace?.members?.find(m => String(m.user?.id || m.userId) === String(authUser?.id));
   const userRole = member?.role || 'viewer';
-  
   const isDocOwner = String(activeDocument?.ownerId) === String(authUser?.id);
   const isWorkspaceHighLevel = userRole === 'owner' || userRole === 'admin';
-  
   const canArchive = isDocOwner || isWorkspaceHighLevel;
 
   if (!canArchive) return null;
@@ -42,20 +39,14 @@ const ArchiveAction = () => {
 
   const handleToggleArchive = async () => {
     if (!docId) return;
-    
     setIsLoading(true);
     const newStatus = !isArchived;
-    
     try {
-      // 1. Update Database via API
       await updateDocument(docId, { isArchived: newStatus });
-      
-      // 2. Instant Sync: Update Yjs Settings Map for all users
       if (provider) {
         const yMap = provider.document.getMap('settings');
         yMap.set('isArchived', newStatus);
       }
-      
       toast.success(newStatus ? "Document archived" : "Document unarchived");
     } catch (error) {
       toast.error(error.response?.data?.message || `Failed to ${newStatus ? 'archive' : 'unarchive'}`);
@@ -66,11 +57,8 @@ const ArchiveAction = () => {
   };
 
   const handleClick = () => {
-    if (isArchived) {
-      handleToggleArchive(); // Direct unarchive
-    } else {
-      setShowConfirm(true); // Confirm archive
-    }
+    if (isArchived) handleToggleArchive();
+    else setShowConfirm(true);
   };
 
   return (
@@ -78,11 +66,11 @@ const ArchiveAction = () => {
       <SidebarItem 
         icon={
           isLoading ? (
-            <Loader2 className="w-4 h-4 animate-spin text-slate-400" />
+            <Loader2 className="w-4 h-4 animate-spin text-[#898989]" />
           ) : isArchived ? (
-            <RotateCcw className="w-4 h-4 text-[#1D9E75]" />
+            <RotateCcw className="w-4 h-4 text-[#3ecf8e]" />
           ) : (
-            <Archive className="w-4 h-4 text-slate-400 group-hover:text-amber-500 transition-colors" />
+            <Archive className="w-4 h-4 text-[#898989] group-hover:text-amber-500 transition-colors" />
           )
         } 
         label={isArchived ? "Unarchive" : "Archive"} 
@@ -90,40 +78,43 @@ const ArchiveAction = () => {
       />
 
       <AlertDialog open={showConfirm} onOpenChange={setShowConfirm}>
-        <AlertDialogContent className="bg-[#0a0b10] border border-white/10 rounded-2xl p-6">
-          <AlertDialogHeader>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
-                <AlertCircle className="w-5 h-5 text-amber-500" />
+        <AlertDialogContent className="bg-[#171717] border border-[#2e2e2e] rounded-2xl p-0 overflow-hidden shadow-2xl max-w-md">
+          <div className="p-8">
+            <AlertDialogHeader>
+              <div className="flex flex-col items-center text-center mb-6">
+                <div className="w-16 h-16 rounded-full bg-amber-500/10 flex items-center justify-center mb-4 border border-amber-500/20">
+                  <Archive className="w-8 h-8 text-amber-500" />
+                </div>
+                <AlertDialogTitle className="text-xl font-bold text-[#fafafa] tracking-tight">Archive document?</AlertDialogTitle>
+                <AlertDialogDescription className="text-[#898989] text-sm leading-relaxed mt-2">
+                  This will hide the document from your active workspace. You can restore it anytime from the dashboard archives.
+                </AlertDialogDescription>
               </div>
-              <AlertDialogTitle className="text-xl font-bold text-slate-200">Archive document?</AlertDialogTitle>
-            </div>
-            <AlertDialogDescription className="text-slate-400 text-sm leading-relaxed">
-              This will hide the document from your workspace and disconnect all active collaborators. You can unarchive it later from the dashboard.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="mt-6">
-            <AlertDialogCancel className="bg-white/5 hover:bg-white/10 border-white/5 text-slate-300 rounded-xl px-6 cursor-pointer">
+            </AlertDialogHeader>
+          </div>
+
+          <div className="bg-[#1c1c1c] p-6 flex flex-col sm:flex-row gap-3 border-t border-[#2e2e2e]">
+            <AlertDialogCancel className="flex-1 bg-[#242424] hover:bg-[#2e2e2e] border-none text-[#fafafa] rounded-xl h-12 font-medium cursor-pointer transition-all">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction 
               onClick={(e) => {
-                e.preventDefault(); // Prevent closing immediately to show loading
+                e.preventDefault();
                 handleToggleArchive();
               }}
               disabled={isLoading}
-              className="bg-amber-500 hover:bg-amber-600 text-[#0a0b10] border-none font-bold rounded-xl px-6 cursor-pointer min-w-[120px] flex items-center justify-center gap-2"
+              className="flex-1 bg-amber-500 hover:bg-amber-600 text-[#171717] border-none font-bold rounded-xl h-12 cursor-pointer transition-all flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Archiving...</span>
                 </>
               ) : (
                 "Archive Now"
               )}
             </AlertDialogAction>
-          </AlertDialogFooter>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
     </>

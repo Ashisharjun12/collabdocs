@@ -127,10 +127,8 @@ const EditorWorkspace = ({ docId, authUser }) => {
     } catch (err) {
       console.error("Restore failed:", err);
     }
-  };
-
-  return (
-    <div className="flex flex-col w-full h-full bg-[#0a0b10] overflow-hidden">
+  };  return (
+    <div className="flex flex-col w-full h-full bg-[#171717] overflow-hidden">
       
       {/* 1. TOP HEADER (Full Width - Always on top) */}
       <div className="z-[100] shrink-0">
@@ -175,18 +173,19 @@ const EditorWorkspace = ({ docId, authUser }) => {
 
         {/* Left Sidebar */}
         {!isHistoryMode && (
-          <div className={`fixed inset-y-0 left-0 z-[150] lg:relative lg:z-30 transition-all duration-300 ease-in-out ${isLeftOpen ? 'translate-x-0 lg:w-[280px] lg:opacity-100' : '-translate-x-full lg:w-0 lg:opacity-0 lg:pointer-events-none'}`}>
+          <div className={`fixed inset-y-0 left-0 z-[150] lg:relative lg:z-30 transition-all duration-500 ease-in-out ${isLeftOpen ? 'translate-x-0 lg:w-[280px] lg:opacity-100' : '-translate-x-full lg:w-0 lg:opacity-0 lg:pointer-events-none'}`}>
             <LeftSidebar 
               isOpen={isLeftOpen} 
               onEnterHistoryMode={() => setIsHistoryMode(true)} 
               onPrint={handlePrint}
               editor={liveEditor}
+              provider={provider}
             />
           </div>
         )}
 
         {/* Center: Editor Column */}
-        <div className="flex-1 flex flex-col min-w-0 bg-[#0a0b10] relative overflow-hidden">
+        <div className="flex-1 flex flex-col min-w-0 bg-[#171717] relative overflow-hidden">
           {/* Archived Banner */}
           {!isHistoryMode && activeDocument?.isArchived && (
             <div className="bg-amber-500/10 border-b border-amber-500/20 px-4 py-1.5 flex items-center justify-between z-[50] shrink-0">
@@ -195,19 +194,19 @@ const EditorWorkspace = ({ docId, authUser }) => {
           )}
 
           {/* Editor Surface */}
-          <div className="flex-1 relative overflow-hidden">
+          <div className="flex-1 relative overflow-hidden custom-scrollbar">
             {isHistoryMode ? (
               previewVersion ? (
                 <VersionPreviewEditor version={previewVersion} />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-slate-600 text-xs font-bold uppercase tracking-widest px-4 text-center">
+                <div className="w-full h-full flex items-center justify-center text-[#4d4d4d] text-[10px] font-bold uppercase tracking-[2px] px-4 text-center">
                   Loading snapshots...
                 </div>
               )
             ) : !isSynced ? (
-              <div className="flex flex-col h-full w-full items-center justify-center gap-3 bg-[#0a0b10]">
-                <div className="w-6 h-6 border-2 border-[#1D9E75] border-t-transparent rounded-full animate-spin" />
-                <span className="text-[11px] text-slate-500 uppercase tracking-widest font-bold">Connecting...</span>
+              <div className="flex flex-col h-full w-full items-center justify-center gap-4 bg-[#171717]">
+                <div className="w-8 h-8 border-2 border-[#3ecf8e] border-t-transparent rounded-full animate-spin" />
+                <span className="text-[10px] text-[#4d4d4d] uppercase tracking-[2px] font-bold">Connecting</span>
               </div>
             ) : (
               <CollaborativeEditor 
@@ -218,7 +217,6 @@ const EditorWorkspace = ({ docId, authUser }) => {
                   name: authUser?.name || authUser?.username,
                   id: authUser?.id,
                   avatarUrl: authUser?.avatarUrl
-
                 }}
                 onEditorReady={setLiveEditor}
               />
@@ -227,7 +225,7 @@ const EditorWorkspace = ({ docId, authUser }) => {
         </div>
 
         {/* Right Sidebar */}
-        <div className={`fixed inset-y-0 right-0 z-[150] lg:relative lg:z-30 transition-all duration-300 ease-in-out ${isRightOpen ? 'translate-x-0 lg:w-[340px] lg:opacity-100' : 'translate-x-full lg:w-0 lg:opacity-0 lg:pointer-events-none'}`}>
+        <div className={`fixed inset-y-0 right-0 z-[150] lg:relative lg:z-30 transition-all duration-500 ease-in-out ${isRightOpen ? 'translate-x-0 lg:w-[340px] lg:opacity-100' : 'translate-x-full lg:w-0 lg:opacity-0 lg:pointer-events-none'}`}>
           {isHistoryMode ? (
             <VersionHistorySidebar 
               previewVersion={previewVersion} 
@@ -238,6 +236,9 @@ const EditorWorkspace = ({ docId, authUser }) => {
               isOpen={isRightOpen} 
               docId={docId}
               provider={provider}
+              editor={liveEditor}
+              onEnterHistoryMode={() => setIsHistoryMode(true)}
+              onPrint={handlePrint}
             />
           )}
         </div>
@@ -263,8 +264,6 @@ const EditorPage = () => {
         const doc = response.data.data.doc;
         setActiveDocument(doc);
         
-        // CRITICAL: If this document has imported blocks that haven't been 
-        // moved to Yjs yet, save them to sessionStorage so the editor can load them.
         if (doc.importStatus === 'active' && doc.importedBlocks) {
           const storageKey = `import-blocks-${docId}`;
           if (!sessionStorage.getItem(storageKey)) {
@@ -281,7 +280,6 @@ const EditorPage = () => {
       } finally {
         setIsLoading(false);
       }
-
     };
     fetchDoc();
     return () => setActiveDocument(null);
@@ -289,22 +287,18 @@ const EditorPage = () => {
 
   if (!accessToken || isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#0a0b10]">
-        <div className="w-8 h-8 border-4 border-[#1D9E75] border-t-transparent rounded-full animate-spin" />
-        <p className="ml-4 text-slate-400 font-medium">Loading workspace...</p>
+      <div className="flex h-screen items-center justify-center bg-[#171717]">
+        <div className="w-10 h-10 border-2 border-[#3ecf8e] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
-  // ── Importing state: show a clean "we're importing your file" screen ─────
   if (activeDocument?.importStatus === 'importing') {
     return (
-      <div className="flex h-screen w-full flex-col items-center justify-center bg-[#0a0b10] px-6">
-
-        {/* Animated file icon */}
-        <div className="relative mb-8">
-          <div className="w-20 h-20 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shadow-2xl">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#1D9E75]">
+      <div className="flex h-screen w-full flex-col items-center justify-center bg-[#171717] px-6">
+        <div className="relative mb-10 group">
+          <div className="w-24 h-24 rounded-3xl bg-[#1c1c1c] border border-[#2e2e2e] flex items-center justify-center shadow-2xl transition-all duration-500 group-hover:border-[#3ecf8e]/30 group-hover:scale-105">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#3ecf8e]">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
               <polyline points="14 2 14 8 20 8"/>
               <line x1="16" y1="13" x2="8" y2="13"/>
@@ -312,46 +306,43 @@ const EditorPage = () => {
               <polyline points="10 9 9 9 8 9"/>
             </svg>
           </div>
-          {/* Orbiting dot */}
-          <div className="absolute inset-0 animate-spin" style={{ animationDuration: '3s' }}>
-            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-[#1D9E75] rounded-full shadow-lg shadow-[#1D9E75]/50" />
+          <div className="absolute inset-0 animate-spin" style={{ animationDuration: '4s' }}>
+            <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#3ecf8e] rounded-full shadow-lg shadow-[#3ecf8e]/50 border-2 border-[#171717]" />
           </div>
         </div>
 
-        {/* Message */}
-        <h2 className="text-lg font-semibold text-white mb-2 tracking-tight">
-          We&apos;re importing your file
+        <h2 className="text-2xl font-medium text-[#fafafa] mb-2 tracking-tight">
+          Preparing your document
         </h2>
-        <p className="text-slate-500 text-sm max-w-xs text-center leading-relaxed mb-8">
-          Please wait while we read and prepare your document for collaborative editing.
+        <p className="text-[#898989] text-sm max-w-sm text-center leading-relaxed mb-10">
+          We&apos;re reading your file and setting up the collaborative environment. This won&apos;t take long.
         </p>
 
-        {/* Progress steps */}
-        <div className="flex flex-col gap-2 w-full max-w-[220px]">
+        <div className="flex flex-col gap-3 w-full max-w-[240px]">
           {[
-            { label: 'Uploading file', done: true },
+            { label: 'Uploading resource', done: true },
             { label: 'Converting content', done: false, active: true },
-            { label: 'Preparing editor', done: false },
+            { label: 'Initializing editor', done: false },
           ].map(({ label, done, active }) => (
-            <div key={label} className="flex items-center gap-3">
-              <div className={`w-4 h-4 rounded-full flex-shrink-0 flex items-center justify-center border transition-all ${
+            <div key={label} className="flex items-center gap-4">
+              <div className={`w-5 h-5 rounded-lg flex-shrink-0 flex items-center justify-center border transition-all duration-500 ${
                 done
-                  ? 'border-[#1D9E75] bg-[#1D9E75]'
+                  ? 'border-[#3ecf8e] bg-[#3ecf8e]'
                   : active
-                    ? 'border-[#1D9E75] bg-transparent'
-                    : 'border-white/10 bg-transparent'
+                    ? 'border-[#3ecf8e] bg-transparent shadow-[0_0_10px_rgba(62,207,142,0.2)]'
+                    : 'border-[#2e2e2e] bg-transparent'
               }`}>
                 {done && (
-                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                    <path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M2 6l3 3 5-5" stroke="#171717" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 )}
                 {active && (
-                  <div className="w-1.5 h-1.5 bg-[#1D9E75] rounded-full animate-ping" />
+                  <div className="w-1.5 h-1.5 bg-[#3ecf8e] rounded-full animate-pulse" />
                 )}
               </div>
-              <span className={`text-xs font-medium ${
-                done ? 'text-[#1D9E75]' : active ? 'text-slate-300' : 'text-slate-600'
+              <span className={`text-xs font-medium tracking-tight ${
+                done ? 'text-[#fafafa]' : active ? 'text-[#3ecf8e]' : 'text-[#4d4d4d]'
               }`}>
                 {label}
               </span>
@@ -359,15 +350,14 @@ const EditorPage = () => {
           ))}
         </div>
 
-        {/* Status polling — keeps checking until importStatus changes to 'active' */}
         <StatusPoller docId={docId} />
       </div>
     );
   }
 
-
   return (
-    <div className="flex h-screen bg-[#0a0b10] text-slate-200 overflow-hidden font-geist selection:bg-[#1D9E75]/30">
+    <div className="flex h-screen bg-[#171717] text-[#fafafa] overflow-hidden font-sans selection:bg-[#3ecf8e]/30">
+
       <CollaborationProvider 
         key={`${docId}-${activeDocument?.importStatus}`} 
         docId={docId} 

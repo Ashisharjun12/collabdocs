@@ -54,29 +54,29 @@ const WorkspaceHome = ({ view }) => {
   if (!activeWorkspace) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-10rem)]">
-        <Loader2 className="w-10 h-10 text-[#1D9E75] animate-spin" />
+        <Loader2 className="w-10 h-10 text-[#3ecf8e] animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-10 selection:bg-[#3ecf8e]/30 selection:text-[#fafafa]">
       {view !== 'starred' && (
         <>
           {/* Create Section - horizontal wide boxes */}
           <CreateDocSection onOpenModal={() => setIsCreateModalOpen(true)} />
-          <div className="h-px bg-gradient-to-r from-[#1e2130] via-[#2a2d3a] to-[#1e2130] mb-8 opacity-50" />
+          <div className="h-px bg-[#2e2e2e] mb-12 opacity-50" />
           
           {/* Filter Tabs */}
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-2 mb-8">
             {['active', 'archived', 'all'].map((filterTab) => (
               <button
                 key={filterTab}
                 onClick={() => fetchDocuments(activeWorkspace.id, filterTab, 1)}
-                className={`px-4 py-2 rounded-full text-xs font-bold capitalize transition-all ${
+                className={`px-4 py-2 rounded-lg text-[13px] font-medium capitalize transition-all cursor-pointer ${
                   docsStatus === filterTab
-                    ? 'bg-[#1D9E75]/10 text-[#1D9E75] border border-[#1D9E75]/20'
-                    : 'bg-[#13151f] text-slate-400 border border-[#1e2130] hover:text-white hover:border-slate-700'
+                    ? 'bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20'
+                    : 'bg-[#1c1c1c] text-[#898989] border border-[#2e2e2e] hover:text-[#fafafa] hover:border-[#4d4d4d]'
                 }`}
               >
                 {filterTab} Documents
@@ -87,14 +87,14 @@ const WorkspaceHome = ({ view }) => {
       )}
 
       {view === 'starred' && (
-        <div className="mb-8">
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#1D9E75]/10 flex items-center justify-center border border-[#1D9E75]/20">
-              <Star className="w-5 h-5 text-[#1D9E75]" />
+        <div className="mb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <h1 className="text-2xl font-medium text-[#fafafa] tracking-tight flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-[#3ecf8e]/10 flex items-center justify-center border border-[#3ecf8e]/20">
+              <Star className="w-6 h-6 text-[#3ecf8e]" />
             </div>
             Starred Documents
           </h1>
-          <p className="text-slate-500 text-sm mt-2 font-medium">All your favorited documents in {activeWorkspace.name}</p>
+          <p className="text-[#898989] text-[14px] mt-3 font-normal">All your favorited documents in {activeWorkspace.name}</p>
         </div>
       )}
 

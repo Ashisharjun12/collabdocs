@@ -58,16 +58,16 @@ const LogoPicker = ({ value, onChange, logoType, onTypeChange }) => {
 
   return (
     <div className="space-y-3">
-      <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Workspace Icon</label>
+      <label className="text-[10px] font-medium text-[#898989] uppercase tracking-[1.2px] ml-1">Workspace Icon</label>
       <div className="flex items-center gap-5">
         <div className="relative group">
           <div 
-            className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#1e2130] bg-[#13151f] flex items-center justify-center cursor-pointer relative"
+            className="w-16 h-16 rounded-lg overflow-hidden border border-[#2e2e2e] bg-[#171717] flex items-center justify-center cursor-pointer relative transition-all hover:border-[#3ecf8e]/30"
             onClick={() => !isUploading && fileInputRef.current?.click()}
           >
             {isUploading ? (
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
-                <Loader2 className="w-5 h-5 text-[#1D9E75] animate-spin" />
+              <div className="absolute inset-0 bg-[#171717]/80 flex items-center justify-center z-10">
+                <Loader2 className="w-5 h-5 text-[#3ecf8e] animate-spin" />
               </div>
             ) : null}
 
@@ -78,13 +78,13 @@ const LogoPicker = ({ value, onChange, logoType, onTypeChange }) => {
             )}
           </div>
           
-          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 rounded-full pointer-events-none group-hover:pointer-events-auto">
+          <div className="absolute inset-0 bg-[#171717]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 rounded-lg pointer-events-none group-hover:pointer-events-auto">
             {!isUploading && (
               <>
                 <button 
                   type="button"
                   onClick={(e) => { e.stopPropagation(); handleRefresh(); }}
-                  className="p-1.5 hover:bg-white/20 rounded-full text-white transition-colors"
+                  className="p-1.5 hover:bg-[#242424] rounded-md text-[#fafafa] transition-colors cursor-pointer"
                   title="Generate new"
                 >
                   <RefreshCw className="w-4 h-4" />
@@ -95,7 +95,7 @@ const LogoPicker = ({ value, onChange, logoType, onTypeChange }) => {
         </div>
 
         <div className="flex flex-col gap-1">
-          <p className="text-[11px] text-slate-400 font-medium">
+          <p className="text-[11px] text-[#898989] font-normal">
             {logoType === 'generated' ? "auto-generated identity" : "custom brand logo"}
           </p>
           <div className="flex gap-2 mt-1">
@@ -105,9 +105,9 @@ const LogoPicker = ({ value, onChange, logoType, onTypeChange }) => {
               size="sm"
               disabled={isUploading}
               onClick={handleRefresh}
-              className="h-9 text-[12px] px-4 bg-[#13151f] border-[#1e2130] text-slate-300 hover:bg-white/5 hover:text-white rounded-xl transition-all flex items-center gap-2"
+              className="h-8 text-[11px] px-3 bg-[#171717] border-[#2e2e2e] text-[#898989] hover:bg-[#242424] hover:text-[#fafafa] rounded-md transition-all flex items-center gap-2 font-medium"
             >
-              <RefreshCw className="w-3.5 h-3.5" /> refresh
+              <RefreshCw className="w-3 h-3" /> Refresh
             </Button>
             <Button 
               type="button"
@@ -115,14 +115,14 @@ const LogoPicker = ({ value, onChange, logoType, onTypeChange }) => {
               size="sm"
               disabled={isUploading}
               onClick={() => fileInputRef.current?.click()}
-              className="h-9 text-[12px] px-4 bg-[#13151f] border-[#1e2130] text-slate-300 hover:bg-white/5 hover:text-white rounded-xl transition-all flex items-center gap-2"
+              className="h-8 text-[11px] px-3 bg-[#171717] border-[#2e2e2e] text-[#898989] hover:bg-[#242424] hover:text-[#fafafa] rounded-md transition-all flex items-center gap-2 font-medium"
             >
               {isUploading ? (
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <Loader2 className="w-3 h-3 animate-spin" />
               ) : (
-                <Upload className="w-3.5 h-3.5" />
+                <Upload className="w-3 h-3" />
               )}
-              upload
+              Upload
             </Button>
           </div>
         </div>

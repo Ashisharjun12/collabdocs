@@ -44,39 +44,39 @@ const EditDocModal = ({ isOpen, onClose, doc }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-[#0d0f18] border-[#1e2130] text-white sm:max-w-[500px] p-7 overflow-hidden rounded-3xl shadow-2xl transition-all">
-        <div className="space-y-6">
+      <DialogContent className="bg-[#1c1c1c] border border-[#2e2e2e] text-[#fafafa] sm:max-w-[500px] p-7 overflow-hidden rounded-xl shadow-2xl transition-all">
+        <div className="space-y-6 animate-in fade-in duration-300">
           <div className="space-y-0.5">
             <div className="flex items-center gap-3 mb-1">
-               <div className="w-8 h-8 bg-[#1D9E75]/10 rounded-lg flex items-center justify-center text-[#1D9E75]">
+               <div className="w-8 h-8 bg-[#3ecf8e]/10 rounded-lg flex items-center justify-center text-[#3ecf8e] border border-[#3ecf8e]/20">
                 <Pen className="w-4 h-4" />
               </div>
-              <DialogTitle className="text-xl font-bold tracking-tight">Rename Document</DialogTitle>
+              <DialogTitle className="text-xl font-medium tracking-tight">Rename Document</DialogTitle>
             </div>
-            <DialogDescription className="text-slate-500 text-[12px]">
+            <DialogDescription className="text-[#898989] text-[12px] font-normal">
               Change the title of your document.
             </DialogDescription>
           </div>
 
           <div className="space-y-5">
             <div className="space-y-2">
-              <Label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">Document Title</Label>
+              <Label className="text-[10px] font-medium text-[#898989] uppercase tracking-[1.2px] ml-1">Document Title</Label>
               <Input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Document Title"
-                className="bg-[#13151f] border-2 border-[#1e2130] text-white focus-visible:ring-[#1D9E75] h-11 rounded-xl placeholder:text-slate-700 font-medium px-4"
+                className="bg-[#171717] border border-[#2e2e2e] text-[#fafafa] focus-visible:ring-[#3ecf8e] h-11 rounded-lg placeholder:text-[#4d4d4d] font-medium px-4 transition-all"
                 autoFocus
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-4 border-t border-[#1e2130]">
+          <div className="flex items-center justify-end gap-3 pt-6 border-t border-[#2e2e2e]">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
-              className="flex-1 bg-transparent border-2 border-[#1e2130] text-slate-400 hover:text-white hover:bg-white/5 h-12 rounded-xl font-bold text-sm"
+              className="bg-transparent border border-[#2e2e2e] text-[#898989] hover:text-[#fafafa] hover:bg-[#242424] h-11 px-6 rounded-lg font-medium text-xs border-none cursor-pointer"
             >
               Cancel
             </Button>
@@ -84,7 +84,7 @@ const EditDocModal = ({ isOpen, onClose, doc }) => {
               type="button"
               onClick={handleSubmit}
               disabled={!title.trim() || isLoading || title === doc?.title}
-              className="flex-[2] bg-[#1D9E75] hover:bg-[#168a65] text-white h-12 rounded-xl font-bold flex items-center justify-center gap-2 shadow-xl shadow-[#1D9E75]/20"
+              className="px-8 bg-[#3ecf8e] hover:bg-[#34b27b] text-[#171717] h-11 rounded-lg font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#3ecf8e]/10 transition-all border-none cursor-pointer"
             >
               {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Save Changes</>}
             </Button>

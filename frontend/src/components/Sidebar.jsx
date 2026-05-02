@@ -101,37 +101,37 @@ const Sidebar = ({ onClose }) => {
   ];
 
   return (
-    <aside className="w-64 border-r border-[#1e2130] bg-[#0d0f18] flex flex-col h-full">
+    <aside className="w-64 border-r border-[#242424] bg-[#1c1c1c] flex flex-col h-full">
       <div className="p-4 flex flex-col h-full overflow-y-auto custom-scrollbar">
         {/* Workspace Switcher */}
         <div className="mb-8">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex items-center gap-3 p-2.5 hover:bg-[#13151f] rounded-2xl cursor-pointer transition-all border border-[#1e2130]/50 hover:border-[#1D9E75]/30 group bg-[#13151f]/30 backdrop-blur-sm shadow-xl">
-                <div className="w-10 h-10 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg shadow-black/40 bg-[#0d0f18] border border-[#1e2130]">
+              <div className="flex items-center gap-3 p-2.5 hover:bg-[#242424] rounded-xl cursor-pointer transition-all border border-[#2e2e2e] hover:border-[#3ecf8e]/30 group bg-[#1c1c1c] shadow-sm">
+                <div className="w-9 h-9 rounded-lg overflow-hidden flex items-center justify-center shadow-md bg-[#171717] border border-[#2e2e2e]">
                   {activeWorkspace?.logoType === 'custom' ? (
                     <img src={activeWorkspace.logo} alt="" className="w-full h-full object-cover" />
                   ) : (
-                    <Avvvatars value={activeWorkspace?.logo || 'default'} style="shape" size={40} />
+                    <Avvvatars value={activeWorkspace?.logo || 'default'} style="shape" size={36} />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-black text-white truncate leading-tight group-hover:text-[#1D9E75] transition-colors tracking-tight">{activeWorkspace?.name || 'Workspace'}</p>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">
+                  <p className="text-[13px] font-medium text-[#fafafa] truncate leading-tight group-hover:text-[#3ecf8e] transition-colors tracking-tight">{activeWorkspace?.name || 'Workspace'}</p>
+                  <p className="text-[10px] text-[#898989] font-medium uppercase tracking-[1.2px] mt-0.5">
                     {activeWorkspace?.userRole || 'Owner'}
                   </p>
                 </div>
-                <ChevronDown className="w-4 h-4 text-slate-600 group-hover:text-[#1D9E75] transition-colors" />
+                <ChevronDown className="w-4 h-4 text-[#4d4d4d] group-hover:text-[#3ecf8e] transition-colors" />
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-64 bg-[#0b0c14] border-[#1e2130] text-slate-200 p-2 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] z-[100] rounded-[24px] border-opacity-60 backdrop-blur-xl">
-              <div className="px-3 py-2 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Your Teams</div>
-              <DropdownMenuSeparator className="bg-[#1e2130] my-2" />
+            <DropdownMenuContent align="start" className="w-64 bg-[#1c1c1c] border-[#2e2e2e] text-[#fafafa] p-2 shadow-2xl z-[100] rounded-xl border-opacity-60 backdrop-blur-xl">
+              <div className="px-3 py-2 text-[10px] font-medium text-[#898989] uppercase tracking-[1.2px]">Your Teams</div>
+              <DropdownMenuSeparator className="bg-[#2e2e2e] my-2" />
               <div className="max-h-60 overflow-y-auto custom-scrollbar space-y-1">
                 {workspaces.map((ws) => (
                   <div 
                     key={ws.id}
-                    className={`flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl cursor-pointer transition-all hover:bg-[#1a1d28] group ${activeWorkspace?.id === ws.id ? 'bg-[#1D9E75]/10 text-[#1D9E75]' : ''}`}
+                    className={`flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg cursor-pointer transition-all hover:bg-[#242424] group ${activeWorkspace?.id === ws.id ? 'bg-[#3ecf8e]/10 text-[#3ecf8e]' : ''}`}
                     onClick={() => {
                       setActiveWorkspace(ws);
                       navigate(`/dashboard/workspace/${ws.slug}`);
@@ -139,23 +139,23 @@ const Sidebar = ({ onClose }) => {
                     }}
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-7 h-7 rounded-xl overflow-hidden flex items-center justify-center text-xs font-bold flex-shrink-0 shadow-md">
+                      <div className="w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center text-xs font-bold flex-shrink-0 shadow-sm border border-[#2e2e2e]">
                         {ws.logoType === 'custom' ? (
                           <img src={ws.logo} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <Avvvatars value={ws.logo || 'default'} style="shape" size={28} />
                         )}
                       </div>
-                      <span className="truncate text-[13px] font-bold tracking-tight">{ws.name}</span>
+                      <span className="truncate text-[13px] font-medium tracking-tight">{ws.name}</span>
                     </div>
                     
                     <WorkspaceActions workspace={ws} />
                   </div>
                 ))}
               </div>
-              <DropdownMenuSeparator className="bg-[#1e2130] my-2" />
+              <DropdownMenuSeparator className="bg-[#2e2e2e] my-2" />
               <DropdownMenuItem 
-                className="flex items-center gap-2 px-3 py-3 rounded-xl hover:bg-[#1a1d28] cursor-pointer transition-colors focus:bg-[#1a1d28] text-[13px] font-bold text-[#1D9E75]"
+                className="flex items-center gap-2 px-3 py-3 rounded-lg hover:bg-[#242424] cursor-pointer transition-colors focus:bg-[#242424] text-[13px] font-medium text-[#3ecf8e]"
                 onClick={() => setIsCreateModalOpen(true)}
               >
                 <Plus className="w-4 h-4" />
@@ -178,16 +178,16 @@ const Sidebar = ({ onClose }) => {
                 end={item.path?.endsWith(activeWorkspace?.slug || 'dashboard')}
                 onClick={handleNavClick}
                 className={({ isActive }) => `
-                  flex items-center justify-between px-3.5 py-3 rounded-2xl text-[13px] font-bold transition-all group cursor-pointer
+                  flex items-center justify-between px-3.5 py-2.5 rounded-lg text-[13px] font-medium transition-all group cursor-pointer
                   ${isActive 
-                    ? 'bg-[#1D9E75]/10 text-[#1D9E75] shadow-sm shadow-[#1D9E75]/5' 
-                    : 'text-slate-400 hover:bg-[#13151f] hover:text-white'
+                    ? 'bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/10 shadow-sm' 
+                    : 'text-[#898989] hover:bg-[#242424] hover:text-[#fafafa]'
                   }
                 `}
               >
                 {({ isActive }) => (
                   <div className="flex items-center gap-3.5">
-                    <item.icon className={`w-[18px] h-[18px] transition-colors ${isActive ? 'text-[#1D9E75]' : 'text-slate-500 group-hover:text-white'}`} />
+                    <item.icon className={`w-[18px] h-[18px] transition-colors ${isActive ? 'text-[#3ecf8e]' : 'text-[#4d4d4d] group-hover:text-[#fafafa]'}`} />
                     <span className="tracking-tight">{item.label}</span>
                   </div>
                 )}

@@ -74,53 +74,55 @@ const CreateDocModal = ({ isOpen, onClose, workspaceId, workspaceSlug }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={(val) => { if(!val) { resetForm(); onClose(); } }}>
-      <DialogContent className="bg-[#0d0f18] border-[#1e2130] text-white sm:max-w-[500px] p-7 overflow-hidden rounded-3xl shadow-2xl transition-all">
+      <DialogContent className="bg-[#1c1c1c] border border-[#2e2e2e] text-[#fafafa] sm:max-w-[500px] p-7 overflow-hidden rounded-xl shadow-2xl transition-all">
         <div className="space-y-6 animate-in fade-in duration-300">
           <div className="space-y-0.5">
             <div className="flex items-center gap-3 mb-1">
-               <div className="w-8 h-8 bg-[#1D9E75]/10 rounded-lg flex items-center justify-center text-[#1D9E75]">
+               <div className="w-8 h-8 bg-[#3ecf8e]/10 rounded-lg flex items-center justify-center text-[#3ecf8e] border border-[#3ecf8e]/20">
                 <Plus className="w-4 h-4" />
               </div>
-              <DialogTitle className="text-xl font-bold tracking-tight">create document</DialogTitle>
+              <DialogTitle className="text-xl font-medium tracking-tight">Create Document</DialogTitle>
             </div>
-            <DialogDescription className="text-slate-500 text-[12px]">
-              start a new page to organize your thoughts
+            <DialogDescription className="text-[#898989] text-[12px] font-normal">
+              Start a new page to organize your thoughts
             </DialogDescription>
           </div>
 
           <div className="space-y-5">
             <div className="space-y-2">
-              <Label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">Document Title</Label>
+              <Label className="text-[10px] font-medium text-[#898989] uppercase tracking-[1.2px] ml-1">Document Title</Label>
               <div className="relative group">
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Untitled Document"
-                  className="bg-[#13151f] border-2 border-[#1e2130] text-white focus-visible:ring-[#1D9E75] h-11 rounded-xl placeholder:text-slate-700 font-medium px-4"
+                  className="bg-[#171717] border border-[#2e2e2e] text-[#fafafa] focus-visible:ring-[#3ecf8e] h-11 rounded-lg placeholder:text-[#4d4d4d] font-medium px-4 transition-all"
                   autoFocus
                 />
               </div>
             </div>
 
             <div className="space-y-3">
-              <Label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider ml-1">Visibility</Label>
+              <Label className="text-[10px] font-medium text-[#898989] uppercase tracking-[1.2px] ml-1">Visibility</Label>
               <div className="grid grid-cols-3 gap-3">
                 {visibilityOptions.map((option) => (
                   <div
                     key={option.id}
                     onClick={() => setVisibility(option.id)}
                     className={`
-                      flex flex-col items-center justify-center gap-2 p-3 rounded-2xl border cursor-pointer transition-all
+                      flex flex-col items-center justify-center gap-2 p-3 rounded-xl border cursor-pointer transition-all
                       ${visibility === option.id 
-                        ? 'bg-[#1D9E75]/5 border-[#1D9E75] shadow-[0_0_15px_rgba(29,158,117,0.1)]' 
-                        : 'bg-[#13151f] border-[#1e2130] hover:bg-[#1a1d28] hover:border-[#2a2d3a]'
+                        ? 'bg-[#3ecf8e]/5 border-[#3ecf8e] shadow-[0_0_15px_rgba(62,207,142,0.05)]' 
+                        : 'bg-[#171717] border-[#2e2e2e] hover:bg-[#242424] hover:border-[#363636]'
                       }
                     `}
                   >
-                    <div className={`w-8 h-8 ${option.bg} ${option.color} rounded-lg flex items-center justify-center shrink-0`}>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                      visibility === option.id ? 'bg-[#3ecf8e]/20 text-[#3ecf8e]' : 'bg-[#1c1c1c] text-[#4d4d4d]'
+                    }`}>
                       <option.icon className="w-4 h-4" />
                     </div>
-                    <span className={`text-[11px] font-bold ${visibility === option.id ? 'text-white' : 'text-slate-500'}`}>
+                    <span className={`text-[11px] font-medium tracking-tight ${visibility === option.id ? 'text-[#fafafa]' : 'text-[#898989]'}`}>
                       {option.label}
                     </span>
                   </div>
@@ -129,22 +131,22 @@ const CreateDocModal = ({ isOpen, onClose, workspaceId, workspaceSlug }) => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-4 border-t border-[#1e2130]">
+          <div className="flex items-center gap-3 pt-4 border-t border-[#2e2e2e]">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
-              className="flex-1 bg-transparent border-2 border-[#1e2130] text-slate-400 hover:text-white hover:bg-white/5 h-12 rounded-xl font-bold text-sm"
+              className="flex-1 bg-transparent border border-[#2e2e2e] text-[#898989] hover:text-[#fafafa] hover:bg-[#242424] h-12 rounded-lg font-medium text-sm cursor-pointer"
             >
-              cancel
+              Cancel
             </Button>
             <Button
               type="button"
               onClick={handleSubmit}
               disabled={!title.trim() || isLoading}
-              className="flex-[2] bg-[#1D9E75] hover:bg-[#168a65] text-white h-12 rounded-xl font-bold flex items-center justify-center gap-2 shadow-xl shadow-[#1D9E75]/20"
+              className="flex-[2] bg-[#3ecf8e] hover:bg-[#34b27b] text-[#171717] h-12 rounded-lg font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#3ecf8e]/10 transition-all border-none cursor-pointer"
             >
-              {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>create document ✍️</>}
+              {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Create Document</>}
             </Button>
           </div>
         </div>

@@ -22,9 +22,9 @@ const AuthCallback = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="min-h-screen bg-[#0f1117] flex flex-col items-center justify-center gap-4">
-      <Loader2 className="w-10 h-10 text-[#1D9E75] animate-spin" />
-      <p className="text-slate-400 font-medium">Finalizing secure session...</p>
+    <div className="min-h-screen bg-[#171717] flex flex-col items-center justify-center gap-4">
+      <Loader2 className="w-10 h-10 text-[#3ecf8e] animate-spin" />
+      <p className="text-[#898989] font-medium">Finalizing secure session...</p>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Info, FileText, Clock, Calendar, User, Layout, Database } from 'lucide-react';
+import { Info, FileText, Clock, Calendar, User, Layout, Database, Shield } from 'lucide-react';
 import { useDocStore } from '../../../../store/doc-store';
 import { useWorkspaceStore } from '../../../../store/workspace-store';
 import SidebarItem from './SidebarItem';
@@ -16,17 +16,24 @@ const DetailsAction = ({ editor }) => {
   const { activeDocument } = useDocStore();
   const { activeWorkspace } = useWorkspaceStore();
 
-  // Calculate statistics from the editor content
   const stats = useMemo(() => {
-    if (!editor) return { words: 0, chars: 0, readTime: 0 };
-    
-    const text = editor.getText();
+    if (!editor || !editor.document) return { words: 0, chars: 0, readTime: 0 };
+    let text = "";
+    const extractText = (blocks) => {
+      blocks.forEach(block => {
+        if (block.content) {
+          if (Array.isArray(block.content)) text += block.content.map(c => c.text || "").join("") + " ";
+          else if (typeof block.content === 'string') text += block.content + " ";
+        }
+        if (block.children) extractText(block.children);
+      });
+    };
+    extractText(editor.document);
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     const chars = text.length;
-    const readTime = Math.ceil(words / 200); // Average 200 words per minute
-    
+    const readTime = Math.ceil(words / 200); 
     return { words, chars, readTime };
-  }, [editor?.getText()]);
+  }, [editor]);
 
   if (!activeDocument) return null;
 
@@ -39,88 +46,95 @@ const DetailsAction = ({ editor }) => {
           <SidebarItem icon={<Info className="w-4 h-4" />} label="Details" />
         </div>
       </SheetTrigger>
-      <SheetContent className="bg-[#0a0b10] border-l border-white/10 w-[400px] sm:w-[540px] text-slate-200 p-0">
+      <SheetContent className="bg-[#171717] border-l border-[#2e2e2e] w-full sm:max-w-[440px] text-[#fafafa] p-0 shadow-2xl">
         <div className="h-full flex flex-col">
-          <SheetHeader className="p-8 border-b border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent">
-            <div className="w-12 h-12 rounded-2xl bg-[#1D9E75]/10 flex items-center justify-center mb-4 border border-[#1D9E75]/20">
-              <Info className="w-6 h-6 text-[#1D9E75]" />
+          <SheetHeader className="p-8 border-b border-[#2e2e2e] bg-[#1c1c1c]/30">
+            <div className="w-12 h-12 rounded-2xl bg-[#3ecf8e]/10 flex items-center justify-center mb-6 border border-[#3ecf8e]/20">
+              <Info className="w-6 h-6 text-[#3ecf8e]" />
             </div>
-            <SheetTitle className="text-2xl font-bold text-white">Document Details</SheetTitle>
-            <SheetDescription className="text-slate-500">
-              Technical metadata and statistics for this file.
+            <SheetTitle className="text-2xl font-bold text-[#fafafa] tracking-tight">Document Details</SheetTitle>
+            <SheetDescription className="text-[#4d4d4d] font-medium mt-1">
+              Technical metadata and live statistics for this session.
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto p-8 space-y-10 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto p-8 space-y-12 custom-scrollbar">
             {/* Section: Stats */}
-            <div className="space-y-4">
-              <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#1D9E75]">Real-time Statistics</h3>
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-bold uppercase tracking-[2px] text-[#3ecf8e]">Real-time Statistics</h3>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 text-slate-500 mb-1">
+                <div className="bg-[#1c1c1c] border border-[#2e2e2e] rounded-2xl p-5 shadow-inner">
+                  <div className="flex items-center gap-2 text-[#4d4d4d] mb-2">
                     <FileText className="w-3.5 h-3.5" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Words</span>
+                    <span className="text-[9px] font-bold uppercase tracking-wider">Words</span>
                   </div>
-                  <div className="text-xl font-bold text-white tracking-tight">{stats.words}</div>
+                  <div className="text-2xl font-medium text-[#fafafa] tracking-tight">{stats.words}</div>
                 </div>
-                <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 text-slate-500 mb-1">
+                <div className="bg-[#1c1c1c] border border-[#2e2e2e] rounded-2xl p-5 shadow-inner">
+                  <div className="flex items-center gap-2 text-[#4d4d4d] mb-2">
                     <Clock className="w-3.5 h-3.5" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">Read Time</span>
+                    <span className="text-[9px] font-bold uppercase tracking-wider">Read Time</span>
                   </div>
-                  <div className="text-xl font-bold text-white tracking-tight">{stats.readTime} min</div>
+                  <div className="text-2xl font-medium text-[#fafafa] tracking-tight">{stats.readTime} min</div>
                 </div>
               </div>
-              <div className="bg-white/[0.03] border border-white/5 rounded-2xl p-4">
-                <div className="flex items-center gap-2 text-slate-500 mb-1">
+              <div className="bg-[#1c1c1c] border border-[#2e2e2e] rounded-2xl p-5 shadow-inner flex justify-between items-center">
+                <div className="flex items-center gap-2 text-[#4d4d4d]">
                   <Database className="w-3.5 h-3.5" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">Characters</span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider">Characters</span>
                 </div>
-                <div className="text-sm font-medium text-slate-300">{stats.chars.toLocaleString()} total</div>
+                <div className="text-sm font-medium text-[#898989] tabular-nums">{stats.chars.toLocaleString()}</div>
               </div>
             </div>
 
             {/* Section: Lineage */}
-            <div className="space-y-4">
-              <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">Lineage</h3>
-              <div className="space-y-3">
-                <div className="flex items-center gap-4 group">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center">
-                    <User className="w-4 h-4 text-slate-500" />
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-bold uppercase tracking-[2px] text-[#4d4d4d]">Lineage & Origin</h3>
+              <div className="space-y-5">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#1c1c1c] border border-[#2e2e2e] flex items-center justify-center shadow-inner">
+                    <User className="w-4 h-4 text-[#4d4d4d]" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Creator</div>
-                    <div className="text-sm font-bold text-slate-200">{owner?.user?.name || "Unknown Creator"}</div>
+                    <div className="text-[9px] font-bold text-[#4d4d4d] uppercase tracking-widest">Creator</div>
+                    <div className="text-sm font-medium text-[#fafafa]">{owner?.user?.name || "System Generated"}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center">
-                    <Calendar className="w-4 h-4 text-slate-500" />
+                  <div className="w-10 h-10 rounded-xl bg-[#1c1c1c] border border-[#2e2e2e] flex items-center justify-center shadow-inner">
+                    <Calendar className="w-4 h-4 text-[#4d4d4d]" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Born On</div>
-                    <div className="text-sm font-bold text-slate-200">{new Date(activeDocument.createdAt).toLocaleDateString(undefined, { dateStyle: 'long' })}</div>
+                    <div className="text-[9px] font-bold text-[#4d4d4d] uppercase tracking-widest">Creation Date</div>
+                    <div className="text-sm font-medium text-[#fafafa]">{new Date(activeDocument.createdAt).toLocaleDateString(undefined, { dateStyle: 'long' })}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center">
-                    <Layout className="w-4 h-4 text-slate-500" />
+                  <div className="w-10 h-10 rounded-xl bg-[#1c1c1c] border border-[#2e2e2e] flex items-center justify-center shadow-inner">
+                    <Layout className="w-4 h-4 text-[#4d4d4d]" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Workspace</div>
-                    <div className="text-sm font-bold text-slate-200">{activeWorkspace?.name || "Global Workspace"}</div>
+                    <div className="text-[9px] font-bold text-[#4d4d4d] uppercase tracking-widest">Home Workspace</div>
+                    <div className="text-sm font-medium text-[#fafafa]">{activeWorkspace?.name || "Personal Drive"}</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Section: System Info */}
-            <div className="pt-6 border-t border-white/5 space-y-4">
-              <div className="bg-amber-500/5 border border-amber-500/10 rounded-2xl p-4">
-                <div className="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1">Document ID</div>
-                <code className="text-[10px] font-mono text-amber-200/60 break-all">{activeDocument.id}</code>
+            {/* Section: System Fingerprint */}
+            <div className="pt-8 border-t border-[#2e2e2e] space-y-4">
+              <div className="bg-[#3ecf8e]/5 border border-[#3ecf8e]/10 rounded-2xl p-5">
+                <div className="flex items-center gap-2 text-[#3ecf8e] mb-2">
+                  <Shield className="w-3.5 h-3.5" />
+                  <span className="text-[9px] font-bold uppercase tracking-widest">Fingerprint</span>
+                </div>
+                <code className="text-[10px] font-mono text-[#898989] break-all leading-relaxed">{activeDocument.id}</code>
               </div>
             </div>
+          </div>
+
+          <div className="p-8 border-t border-[#2e2e2e] bg-[#1c1c1c]/20">
+             <p className="text-[9px] font-bold text-[#4d4d4d] uppercase tracking-[3px] text-center">Flow Metadata Engine</p>
           </div>
         </div>
       </SheetContent>
