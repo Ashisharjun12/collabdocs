@@ -2,6 +2,9 @@
 
 CollabDocs is a high-performance, real-time collaborative documentation platform that combines the **best of Google Docs' real-time editing** with **Notion's flexible, block-based organization**. Built with a modern modular monolith architecture, it provides a seamless, conflict-free environment for teams to think and write together.
 
+**🌐 Live Demo: [thecollabdocs.tech](https://www.thecollabdocs.tech/)**
+
+
 ---
 
 ## Overview
