@@ -274,7 +274,7 @@ export class DocsService implements IDocsService {
     }
 
 
-    // import document from file (background)
+    // import document from file 
     async importFromFile(userId: string, dto: { fileKey: string, workspaceId: string, title?: string }): Promise<TDocument> {
         // 1. Permission check
         const hasAccess = await AccessControlService.hasWorkspaceAccess(userId, dto.workspaceId, 'editor');

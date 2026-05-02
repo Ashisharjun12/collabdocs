@@ -24,21 +24,33 @@ export const docsWorker = new Worker(
       }
 
       const { blocks } = response.data;
-      logger.info({ count: blocks?.length || 0, docId }, '[Worker] Blocks received from Python');
+      logger.info({ count: blocks?.length || 0, docId }, ' Blocks received from Python');
 
-      // 2. Map Python blocks → BlockNote block format
-      // BlockNote block format: { id, type, props, content: [{type:'text', text:'...', styles:{}}], children:[] }
       const bnBlocks = blocks
-        .filter((block: any) => block.type !== 'page-break') // editor CSS handles page layout
+        .filter((block: any) => block.type !== 'page-break')
         .map((block: any, i: number) => {
-        const id = `import-${i}-${Math.random().toString(36).substr(2, 5)}`;
+          const id = `import-${i}-${Math.random().toString(36).substr(2, 5)}`;
 
-        if (block.type === 'heading') {
+          if (block.type === 'heading') {
+            return {
+              id,
+              type: 'heading',
+              props: {
+                level: block.props?.level || 1,
+                textColor: 'default',
+                backgroundColor: 'default',
+                textAlignment: 'left',
+              },
+              content: block.content ? [{ type: 'text', text: block.content, styles: {} }] : [],
+              children: [],
+            };
+          }
+
+          // Default: paragraph
           return {
             id,
-            type: 'heading',
+            type: 'paragraph',
             props: {
-              level: block.props?.level || 1,
               textColor: 'default',
               backgroundColor: 'default',
               textAlignment: 'left',
@@ -46,26 +58,9 @@ export const docsWorker = new Worker(
             content: block.content ? [{ type: 'text', text: block.content, styles: {} }] : [],
             children: [],
           };
-        }
-
-        // Default: paragraph
-        return {
-          id,
-          type: 'paragraph',
-          props: {
-            textColor: 'default',
-            backgroundColor: 'default',
-            textAlignment: 'left',
-          },
-          content: block.content ? [{ type: 'text', text: block.content, styles: {} }] : [],
-          children: [],
-        };
-      });
+        });
 
       logger.info({ count: bnBlocks.length, docId }, '[Worker] BlockNote blocks mapped');
-
-      // 3. Save blocks as JSON + mark as active
-      // The frontend will use BlockNote's own blocksToYXmlFragment to load these into the editor
       await db.update(documents)
         .set({
           importedBlocks: JSON.stringify(bnBlocks),
@@ -74,14 +69,12 @@ export const docsWorker = new Worker(
         })
         .where(eq(documents.id, docId));
 
-      // 4. Signal Hocuspocus to reload (evict empty in-memory state)
       await bullmqConnection.publish('hocuspocus:reload', JSON.stringify({ documentName: docId }));
 
       logger.info({ docId, blocks: bnBlocks.length }, '[Worker] Import complete');
       return { success: true, blocksCount: bnBlocks.length };
 
     } catch (error: any) {
-      // Mark as failed so UI doesn't hang
       await db.update(documents)
         .set({ importStatus: 'failed', updatedAt: new Date() })
         .where(eq(documents.id, docId));

@@ -70,7 +70,6 @@ export class AuthService implements IAuthService {
   async forgotPassword(email: string): Promise<void> {
     const user = await this.userService.findByEmail(email);
     if (!user) {
-      // Don't reveal if user exists or not for security
       return;
     }
 
@@ -153,10 +152,6 @@ export class AuthService implements IAuthService {
           isPersonal: true,
         });
       }
-    } else {
-        // User exists by Google ID - we could potentially update their name/avatar if they are missing
-        // but for now we just return them to preserve their settings.
-        // We could add a sync here if needed.
     }
 
     return this.generateAuthResponse(user, deviceInfo, ipAddress);
@@ -222,7 +217,6 @@ export class AuthService implements IAuthService {
 
   // revoke specific session
   async revokeSession(userId: string, sessionId: string): Promise<void> {
-    // Optional: verify that the session belongs to the user
     await this.authRepository.revokeSession(sessionId);
   }
 

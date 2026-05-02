@@ -13,8 +13,8 @@ export const uploads = pgTable("uploads", {
     size: integer("size"),
     status: uploadStatusEnum("status").notNull().default("pending"),
     processingStatus: processingStatusEnum("processing_status").notNull().default("none"),
-    providerUploadId: text("provider_upload_id"), // R2 UploadId for multipart support
-    metadata: jsonb("metadata"), // Flexible storage for image dimensions, PDF page counts, etc.
+    providerUploadId: text("provider_upload_id"),
+    metadata: jsonb("metadata"), 
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow(),
 });

@@ -157,6 +157,7 @@ export class DocsRepository implements IDocsRepository {
         }
     }
 
+    // get favorites
     async listFavorites(userId: string, workspaceId: string): Promise<TDocument[]> {
         const favorites = await db
             .select({

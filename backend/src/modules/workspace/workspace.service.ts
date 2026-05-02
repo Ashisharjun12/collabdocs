@@ -118,12 +118,12 @@ export class WorkspaceService implements IWorkspaceService {
             const user = await this.userRepository.findById(userId);
             if (!user) throw ApiError.unauthorized("User not found");
 
-            // SECURITY: Only the person invited can accept this specific invite
+            // Only the person invited can accept this specific invite
             if (user.email !== invite.email) {
                 throw ApiError.forbidden("This invitation was sent to another email address");
             }
 
-            // Check if already a member (might have joined via general link already)
+            // Check if already a member 
             const isMember = await this.workspaceRepository.isMember(invite.workspaceId, user.id);
             if (!isMember) {
                 await this.workspaceRepository.addMember(invite.workspaceId, user.id, invite.role);
@@ -133,7 +133,7 @@ export class WorkspaceService implements IWorkspaceService {
             return;
         }
 
-        // 2. If no specific invite, check if it's a general workspace invite code
+        // check if it's a general workspace invite code
         const workspace = await this.workspaceRepository.findByInviteCode(token);
         if (!workspace) {
             throw ApiError.notFound("Invalid invitation token or invite code");
@@ -165,17 +165,17 @@ export class WorkspaceService implements IWorkspaceService {
             throw ApiError.notFound("Workspace not found");
         }
 
-        // Access rules:
-        // - Public: Accessible by anyone
-        // - Team: Accessible by any logged-in user
-        // - Private: Only accessible by members
+      // rules of access:
+      // if private access only to member
+      // if team or public access to all
+      // if team or public user
         if (workspace.visibility === "private") {
             const isMember = await this.workspaceRepository.isMember(workspaceId, userId);
             if (!isMember) {
                 throw ApiError.forbidden("You do not have access to this restricted workspace");
             }
         }
-        // If it's Team or Public, we let them see it. Membership is handled during 'Join'.
+        
 
         const members = await this.workspaceRepository.getMembers(workspaceId);
         const userRole = await this.workspaceRepository.getMemberRole(workspaceId, userId);
@@ -206,7 +206,7 @@ export class WorkspaceService implements IWorkspaceService {
             visibility: dto.visibility
         });
 
-        // Re-fetch to get the workspace with userRole included
+        // Re-fetch workspace 
         const updatedWorkspaces = await this.workspaceRepository.findByUser(userId);
         const updated = updatedWorkspaces.find(ws => ws.id === workspaceId);
         
@@ -241,7 +241,6 @@ export class WorkspaceService implements IWorkspaceService {
 
         const requesterRole = await this.workspaceRepository.getMemberRole(workspaceId, userId);
         
-        // Self-removal is not allowed via this endpoint
         if (userId === targetUserId) {
             throw ApiError.badRequest("You cannot remove yourself from the workspace here.");
         }
@@ -269,12 +268,12 @@ export class WorkspaceService implements IWorkspaceService {
             throw ApiError.forbidden("Only the owner can delete the workspace");
         }
 
-        // PROTECTION: Cannot delete personal/default workspace
+        // Cannot delete personal/default workspace
         if (workspace.isPersonal) {
             throw ApiError.badRequest("Cannot delete the default personal workspace.");
         }
 
-        // PROTECTION: Cannot delete if it's the only workspace
+        // Cannot delete if it's the only workspace
         const userWorkspaces = await this.workspaceRepository.findByUser(userId);
         if (userWorkspaces.length <= 1) {
             throw ApiError.badRequest("You must have at least one workspace.");

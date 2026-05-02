@@ -12,7 +12,7 @@ const uploadStorageService = new R2StorageService();
 const uploadService = new UploadService(uploadRepository, uploadStorageService);
 const uploadController = new UploadController(uploadService);
 
-// All upload routes are protected
+// routes
 router.use(authGuard);
 
 router.post("/presigned-url", uploadController.generatePresignedUrl);

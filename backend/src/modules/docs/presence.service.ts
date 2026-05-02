@@ -9,7 +9,7 @@ export class PresenceService {
             const key = `doc:${documentId}:presence`;
             await bullmqConnection.sadd(key, userId);
             
-           // set expiry of 2 hours on the whole set just to be safe against ghost data
+           // set expiry of 2 hours 
             await bullmqConnection.expire(key, 7200);
             
             logger.debug({ documentId, userId }, "User added to document presence");

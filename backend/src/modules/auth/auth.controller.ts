@@ -134,7 +134,7 @@ export class AuthController {
 
     await this.authService.verifyEmail(token as string);
 
-    // After verification, redirect to login with a success message or just to login
+    // After verification, redirect to login
     res.redirect(`${_config.CLIENT_URL}/login?verified=true`);
   });
 

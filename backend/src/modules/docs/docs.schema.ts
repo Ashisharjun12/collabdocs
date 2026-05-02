@@ -1,13 +1,6 @@
-import { pgTable, uuid, varchar, timestamp, boolean, pgEnum, customType, text, index } from "drizzle-orm/pg-core";
+import { pgTable, uuid, varchar, timestamp, boolean, pgEnum, text, index } from "drizzle-orm/pg-core";
 import { users } from "../user/user.schema.js";
 import { workspaces } from "../workspace/workspace.schema.js";
-
-// Custom type for bytea (binary storage for Yjs)
-const bytea = customType<{ data: Buffer }>({
-  dataType() {
-    return "bytea";
-  },
-});
 
 // Roles 
 export const documentRoleEnum = pgEnum('document_role', [
@@ -66,8 +59,8 @@ export const shareLinks = pgTable("share_links", {
 export const documentVersions = pgTable("document_versions", {
   id: uuid("id").primaryKey().defaultRandom(),
   documentId: uuid("document_id").notNull().references(() => documents.id, { onDelete: "cascade" }),
-  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }), // Nullable for auto-saves
-  name: varchar("name", { length: 255 }), // Nullable for auto-saves
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }), 
+  name: varchar("name", { length: 255 }), 
   r2Key: varchar("r2_key", { length: 500 }).notNull(),
   isAutoSaved: boolean("is_auto_saved").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -87,7 +80,7 @@ export const documentChats = pgTable("document_chats", {
   documentId: uuid("document_id").notNull().references(() => documents.id, { onDelete: "cascade" }),
   userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
-  type: varchar("type", { length: 50 }).notNull().default('text'), // 'text', 'image', 'system'
+  type: varchar("type", { length: 50 }).notNull().default('text'), 
   createdAt: timestamp("created_at").defaultNow().notNull(),
 }, (table) => {
   return {

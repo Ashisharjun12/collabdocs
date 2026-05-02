@@ -69,7 +69,7 @@ export class UserRepository implements IUserRepository {
     return result[0];
   }
 
-  // update user role (Optimistic Locking)
+  // update user role
   async updateRole(id: string, data: IUpdateRoleDto): Promise<TUser> {
     const result = await db
       .update(users)

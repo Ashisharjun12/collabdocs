@@ -2,7 +2,7 @@ import { hocuspocusServer } from "../../gateway/hocuspocus.js";
 import { PresenceService } from "./presence.service.js";
 import { logger } from "../../utils/logger.js";
 
-//  bridge between rest apis and websocket server
+
 export class CollabService {
     // evict all users from document
     static async evictAll(documentId: string): Promise<void> {
@@ -12,7 +12,7 @@ export class CollabService {
             // 1. Tell Hocuspocus to close connections for this document
             const server = hocuspocusServer as any;
             
-            // Try the direct method first (if it exists in the runtime version)
+            // direct method first
             if (typeof server.closeConnections === 'function') {
                 server.closeConnections(documentId);
             } 

@@ -19,7 +19,7 @@ export class DocsChatService {
       let finalAvatar = userProfile.avatar || userProfile.avatarUrl || userProfile.avatar_url;
       let finalName = userProfile.name || userProfile.username;
 
-      // FALLBACK: If profile data is missing (e.g., old JWT), fetch from DB once
+      // fallback if data is missing
       if (!finalAvatar || !finalName) {
         try {
           const [dbUser] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
@@ -45,7 +45,7 @@ export class DocsChatService {
         }
       };
 
-      // 1. INSTANT BROADCAST (Zero latency via Socket.io)
+      // instant broadcast via socket
       try {
         SocketHandler.emitToRoom(docId, "chat_message", broadcastPayload);
         logger.info({ docId, messageId }, 'Broadcasting chat message via Socket.io');
@@ -53,8 +53,7 @@ export class DocsChatService {
         logger.error({ err: broadcastError, docId }, 'Socket broadcast failed');
       }
 
-      // 2. BACKGROUND SAVE (Async)
-      // We return the payload immediately, DB happens in parallel
+      // background save
       docsChatRepository.saveMessage({
         id: messageId,
         documentId: docId,

@@ -21,7 +21,6 @@ export const snapshotWorker = new Worker(
             const snapshotId = randomUUID();
             
             // 2. Define R2 Key
-            // e.g., documents/doc-uuid/snapshots/snapshot-uuid.bin
             const r2Key = `documents/${documentId}/snapshots/${snapshotId}.bin`;
 
             // 3. Upload binary snapshot to Cloudflare R2
@@ -33,7 +32,7 @@ export const snapshotWorker = new Worker(
             await db.insert(documentVersions).values({
                 id: snapshotId,
                 documentId,
-                userId: userId || null, // Nullable for system autosaves
+                userId: userId || null, // for autosave userId is null
                 name: name || null,
                 r2Key,
                 isAutoSaved,
@@ -44,12 +43,12 @@ export const snapshotWorker = new Worker(
             return { success: true, snapshotId, r2Key };
         } catch (error) {
             logger.error({ err: error, documentId }, "Failed to process snapshot job");
-            throw error; // Let BullMQ handle retries
+            throw error; 
         }
     },
     {
         connection: bullmqConnection,
-        concurrency: 5, // Process up to 5 snapshots concurrently
+        concurrency: 5, 
     }
 );
 
