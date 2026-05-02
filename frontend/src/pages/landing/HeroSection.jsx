@@ -44,18 +44,6 @@ const HeroSection = () => {
           </Button>
         </div>
 
-
-        {/* Social Proof */}
-        <div className="flex flex-col items-center gap-6">
-          <p className="text-[12px] font-normal text-[#898989] uppercase tracking-[1.2px]">
-            Loved by teams at
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-40 grayscale">
-            {['Flow', 'TechPulse', 'CreativeCo', 'FinFlow', 'Nexus'].map((brand) => (
-               <span key={brand} className="text-[#fafafa] font-medium tracking-tight text-lg italic">{brand}</span>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );

@@ -57,7 +57,7 @@ const SignupPage = () => {
         {/* Header */}
         <div className="space-y-2">
           <h1 className="text-3xl font-medium text-[#fafafa] tracking-tight">Create your account</h1>
-          <p className="text-[#898989] text-[15px]">Join 10,000+ developers building together.</p>
+         
         </div>
 
         {/* Social Actions */}

@@ -31,17 +31,10 @@ const LandingNavbar = () => {
 
       <div className="flex items-center gap-4">
         <Button
-          variant="ghost"
           onClick={() => navigate('/login')}
-          className="text-[14px] font-medium text-[#898989] hover:text-[#fafafa] hover:bg-transparent px-4 cursor-pointer"
-        >
-          Sign in
-        </Button>
-        <Button
-          onClick={() => navigate('/signup')}
           className="bg-[#3ecf8e] hover:bg-[#00c573] text-[#171717] px-5 py-2 rounded-full text-[14px] font-medium shadow-sm transition-all active:scale-95 border-none cursor-pointer"
         >
-          Start your project
+          Sign in
         </Button>
       </div>
     </nav>

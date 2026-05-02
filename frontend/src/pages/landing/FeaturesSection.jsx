@@ -127,14 +127,7 @@ const FeaturesSection = () => {
             <FeatureCard key={i} feat={feat} index={i} />
           ))}
         </div>
-        
-        <div className="mt-20 flex flex-wrap justify-center gap-10 md:gap-20 opacity-20 grayscale">
-           <div className="flex items-center gap-2 text-xl font-bold italic">FLOW_ENGINE</div>
-           <div className="flex items-center gap-2 text-xl font-bold italic">SYNC_MESH</div>
-           <div className="flex items-center gap-2 text-xl font-bold italic">EDGE_DOCS</div>
-           <div className="flex items-center gap-2 text-xl font-bold italic">CRDT_PROTO</div>
-        </div>
-      </div>
+              </div>
     </section>
   );
 };
