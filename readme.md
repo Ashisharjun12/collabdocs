@@ -15,8 +15,9 @@ CollabDocs is a high-performance, real-time collaborative documentation platform
 
 ![Workspace Preview](https://ik.imagekit.io/aevhlnk0h/Screenshot%202026-05-02%20165029.png)
 
-**Architecture: [System Design (HLD)]
+---
 
+## Architecture
 ![System Architecture](https://ik.imagekit.io/aevhlnk0h/Untitled-2025-01-17-2005.png)
 
 ---
