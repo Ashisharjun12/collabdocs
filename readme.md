@@ -3,6 +3,7 @@
 CollabDocs is a high-performance, real-time collaborative documentation platform that combines the **best of Google Docs' real-time editing** with **Notion's flexible, block-based organization**. Built with a modern modular monolith architecture, it provides a seamless, conflict-free environment for teams to think and write together.
 
 **🌐 Live Demo: [thecollabdocs.tech](https://www.thecollabdocs.tech/)**
+** Architecture: [System Design (HLD)](https://ik.imagekit.io/aevhlnk0h/Untitled-2025-01-17-2005.png)**
 
 
 ---
@@ -70,7 +71,7 @@ To fully utilize CollabDocs, you will need to provide your own API keys for the 
 
 ## Architecture & Project Structure
 
-CollabDocs is organized as a modular monorepo, separating the user experience from core business logic and high-intensity processing.
+CollabDocs is organized as a modular monorepo, separating the user experience from core business logic and high-intensity processing. For a deep dive into the infrastructure and data flow, see our **[High-Level Design (HLD)](HLD.md)**.
 
 ```bash
 collabdocs/
