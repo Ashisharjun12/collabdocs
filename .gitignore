@@ -74,3 +74,6 @@ converter-service/.ipynb_checkpoints/
 **/node_modules
 **/dist
 **/build
+
+# Interview notes
+interview.md

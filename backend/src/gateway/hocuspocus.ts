@@ -101,11 +101,11 @@ export const hocuspocusServer = new Server({
           await r2.uploadBuffer(key, stateBuffer);
           logger.info({ documentName, key, bytes: stateBuffer.length }, '[Hocuspocus] State saved to R2');
 
-          
+
           await db.update(documents)
             .set({
               contentR2Key: key,
-              importedBlocks: null, 
+              importedBlocks: null,
               title: title || undefined,
               updatedAt: new Date(),
             })
@@ -148,7 +148,7 @@ export const hocuspocusServer = new Server({
           role: 'viewer',
         };
       }
-      
+
       logger.warn({ documentName }, '[Hocuspocus] Auth failed: no token and not public');
       throw new Error('Not authenticated');
     }
@@ -184,12 +184,12 @@ export const hocuspocusServer = new Server({
 
 if (bullmqConnection) {
   const sub = bullmqConnection.duplicate();
-  sub.subscribe('hocuspocus:reload').catch((err) => {
+  sub.subscribe('hocuspocus:reload').catch((err: any) => {
     logger.error(err, '[Hocuspocus] Failed to subscribe to reload channel');
   });
 
 
-  sub.on('message', async (channel, message) => {
+  sub.on('message', async (channel:any, message:any)  => {
     if (channel !== 'hocuspocus:reload') return;
 
     const { documentName } = JSON.parse(message);
@@ -200,7 +200,7 @@ if (bullmqConnection) {
     const internalDoc = (hocuspocusServer as any).documents?.get(documentName);
     if (internalDoc) {
       internalDoc.connections?.forEach((conn: any) => {
-        try { conn.connection?.close(); } catch {}
+        try { conn.connection?.close(); } catch { }
       });
       (hocuspocusServer as any).documents?.delete(documentName);
     }
